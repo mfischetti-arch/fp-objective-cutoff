@@ -35,3 +35,6 @@ Thumbs.db
 *~
 .idea/
 .vscode/
+
+# the compressed validated solutions ARE part of the package
+!campaign_scip/validated_sols.tgz

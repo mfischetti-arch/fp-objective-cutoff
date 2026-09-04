@@ -117,12 +117,14 @@ here (given the cluster time), and all available from the author on request.
    `prototype/inst_list.txt` and `campaign_gurobi/inst_target23.txt` list exactly
    which ones are used, and `miplib2017.solu` gives the reference values.
 
-2. **The 32,627 `.sol` files written by the SCIP campaign (~455 MB).** They live
-   in `~/fpc/sols/` on the cluster. What this package ships is the *outcome* of
-   their independent validation: `campaign_scip/validated.txt` (28,198 `VALID|`
-   rows, one per validated solution), which is what `agg_fact.py --valid` reads
-   and what the paper reports. Re-running the validation from the `.sol` files
-   needs `campaign_scip/validate_sols.sh` and a SCIP build.
+2. **The 32,627 `.sol` files written by the SCIP campaign** are included,
+   compressed: `campaign_scip/validated_sols.tgz` (31 MB; 455 MB unpacked,
+   paths `fpc/sols/<campaign>/<instance>__<variant>_s<seed>.sol`, plus a copy
+   of `validated.txt`). The *outcome* of their independent validation is
+   `campaign_scip/validated.txt` (28,198 `VALID|` rows, one per validated
+   solution), which is what `agg_fact.py --valid` reads and what the paper
+   reports. Re-running the validation from the `.sol` files needs
+   `campaign_scip/validate_sols.sh` and a SCIP build.
 
 3. **The raw SCIP logs, ~4.2 GB** (`~/fpc/out/` and `~/fpc/sets_*/` on the
    cluster), archived as `~/archive/fpc_scip_out_sets_2026-09-03.tgz`, **436 MB
