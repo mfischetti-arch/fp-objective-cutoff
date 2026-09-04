@@ -1,0 +1,12 @@
+# Keep line endings sane for a package that is cloned on Linux clusters.
+* text=auto eol=lf
+
+# Shell scripts MUST have LF endings: a CRLF shebang line is a hard error.
+*.sh   text eol=lf
+*.py   text eol=lf
+
+# Binary / large data: never touched by the line-ending machinery.
+*.pdf  binary
+*.gz   binary
+*.tgz  binary
+*.png  binary
