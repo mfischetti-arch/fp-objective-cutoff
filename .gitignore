@@ -1,0 +1,37 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+
+# LaTeX by-products (the manuscript sources are not in this repo, but the
+# table bodies here get compiled during checks)
+*.aux
+*.log
+*.out
+*.toc
+*.bbl
+*.blg
+*.fls
+*.fdb_latexmk
+*.synctex.gz
+texput.log
+
+# run-time output of the campaigns: regenerable, and huge
+out/
+logs/
+sols/
+sets_*/
+*.tgz
+
+# generated figure (regenerate with: cd paper && python figs_v2.py)
+paper/fig5_band.pdf
+paper/fig6_profile.pdf
+
+# editors / OS
+.DS_Store
+Thumbs.db
+*~
+.idea/
+.vscode/

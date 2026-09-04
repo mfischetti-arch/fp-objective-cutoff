@@ -1,0 +1,29 @@
+%% generata da: python mk_tabs_fact.py
+%% input: C:\usr\PAPER\fp-objective-cutoff\campaign_scip\results_fact.txt
+%% nomi dei bracci: macro \armnone \armchk \armfgl \armfb \armfbn del preambolo
+%% solo il tabular: table/caption/label e il corpo del testo li mette il .tex
+%% T1, strato E1: 176 istanze, 12 bracci x 5 semi
+
+\begin{tabular}{lrrrrrrrrrr}
+\toprule
+ & \multicolumn{2}{c}{with a solution} & \multicolumn{5}{c}{medians} & \multicolumn{3}{c}{completion LPs} \\
+\cmidrule(lr){2-3}\cmidrule(lr){4-8}\cmidrule(lr){9-11}
+variant & inst. & runs & gap (\%) & PI/TL (\%) & $t_{\mathrm{first}}$ (s) & rounds & LP iter. & calls & feas. & infeas. \\
+\midrule
+\armnone{\nocut} & 176/176 & 856/880 & 59.12 & 71.0 & 4.07 & 8\,032 & 2\,030 & -- & -- & -- \\
+\armnone{0.5} & 173/176 & 840/880 & 39.97 & 50.2 & 4.61 & 977 & 104\,926 & -- & -- & -- \\
+\addlinespace
+\armchk{\nocut} & 176/176 & 856/880 & 58.87 & 66.7 & 3.99 & 7\,695 & 2\,124 & -- & -- & -- \\
+\armchk{0.5} & 173/176 & 840/880 & 30.82 & 46.4 & 4.12 & 834 & 105\,064 & -- & -- & -- \\
+\armchk{0.75} & 173/176 & 838/880 & 29.69 & 44.0 & 4.04 & 836 & 96\,620 & -- & -- & -- \\
+\armchk{0.9} & 173/176 & 840/880 & 27.96 & 43.9 & 4.11 & 873 & 86\,760 & -- & -- & -- \\
+\armchk{0.95} & 173/176 & 840/880 & 29.39 & 44.8 & 4.09 & 944 & 80\,909 & -- & -- & -- \\
+\addlinespace
+\armfgl{\nocut} & 176/176 & 856/880 & 55.81 & 65.3 & 4.03 & 6\,720 & 2\,124 & 8\,413\,518 & 242 & 50\,873 \\
+\armfgl{0.5} & 173/176 & 840/880 & 30.41 & 44.0 & 4.15 & 780 & 107\,402 & 5\,316\,978 & 19\,865 & 3\,072\,971 \\
+\armfgl{0.95} & 173/176 & 840/880 & 29.39 & 44.2 & 4.17 & 820 & 80\,352 & 5\,559\,625 & 6\,599 & 432\,887 \\
+\addlinespace
+\armfb{0.5} & 118/176 & 533/880 & 51.48 & 70.7 & 4.81 & 248 & 107\,649 & -- & -- & -- \\
+\armfbn{0.5} & 105/176 & 466/880 & 95.84 & 98.5 & 6.22 & 232 & 108\,320 & -- & -- & -- \\
+\bottomrule
+\end{tabular}

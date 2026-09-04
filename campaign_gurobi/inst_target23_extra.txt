@@ -1,0 +1,8 @@
+# set	name	mps	zbest	bench
+# NTUNE=0 SEED=4242 WIDE=inst_wide.txt ELIGIBLE=eligible23_extra.txt  candidate=6 (benchmark=2, fuori benchmark=4)  scartate={'no_best': 33, 'dup': 0, 'not_eligible': 424}  --  eleggibilita' (pilota, t_LP, at_best) decisa NEL TASK e qui gia' filtrata con ELIGIBLE
+eval	supportcase26	/nfsd/rop/instances/miplib2017/supportcase26.mps.gz	1745.123813	1
+eval	swath	/nfsd/rop/instances/miplib2017/swath.mps.gz	467.407491	0
+eval	t1722	/nfsd/rop/instances/miplib2017/t1722.mps.gz	108953	0
+eval	tbfp-bigm	/nfsd/rop/instances/miplib2017/tbfp-bigm.mps.gz	24.163194443	0
+eval	var-smallemery-m6j6	/nfsd/rop/instances/miplib2017/var-smallemery-m6j6.mps.gz	-149.37501	1
+eval	vpphard	/nfsd/rop/instances/miplib2017/vpphard.mps.gz	5	0

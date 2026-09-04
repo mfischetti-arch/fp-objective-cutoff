@@ -1,0 +1,26 @@
+%% generata da: python mk_tabs_fact.py
+%% input: C:\usr\PAPER\fp-objective-cutoff\campaign_scip\results_fact.txt
+%% nomi dei bracci: macro \armnone \armchk \armfgl \armfb \armfbn del preambolo
+%% solo il tabular: table/caption/label e il corpo del testo li mette il .tex
+%% T2, SOLO E1 (176 istanze): appaiato per istanza sul gap finale, Holm su 12 confronti
+
+\begin{tabular}{lrrrrrr}
+\toprule
+ & \multicolumn{3}{c}{instances} & \multicolumn{2}{c}{$p$-value} & median diff. \\
+\cmidrule(lr){2-4}\cmidrule(lr){5-6}\cmidrule(lr){7-7}
+comparison ($A$ vs.\ $B$) & $A$ better & tie & $A$ worse & sign test & Holm & $B-A$, non-tied \\
+\midrule
+\armchk{\nocut} vs.\ \armnone{\nocut} & 22 & 154 & 0 & $<10^{-4}$ & $<10^{-4}$ & $+17.1$ \\
+\armchk{0.5} vs.\ \armnone{0.5} & 67 & 93 & 16 & $<10^{-4}$ & $<10^{-4}$ & $+2.8$ \\
+\armnone{0.5} vs.\ \armnone{\nocut} & 90 & 72 & 14 & $<10^{-4}$ & $<10^{-4}$ & $+11.0$ \\
+\armchk{0.5} vs.\ \armchk{\nocut} & 105 & 59 & 12 & $<10^{-4}$ & $<10^{-4}$ & $+12.7$ \\
+\armchk{0.95} vs.\ \armchk{\nocut} & 119 & 50 & 7 & $<10^{-4}$ & $<10^{-4}$ & $+9.8$ \\
+\armchk{0.95} vs.\ \armchk{0.5} & 64 & 73 & 39 & 0.0176 & 0.0528 & $+0.7$ \\
+\armfgl{0.5} vs.\ \armchk{0.5} & 27 & 142 & 7 & 0.0008 & 0.0033 & $+1.7$ \\
+\armfgl{0.95} vs.\ \armchk{0.95} & 18 & 147 & 11 & 0.2649 & 0.2649 & $+0.1$ \\
+\armfgl{\nocut} vs.\ \armchk{\nocut} & 12 & 160 & 4 & 0.0768 & 0.1536 & $+1.4$ \\
+\armfgl{0.5} vs.\ \armchk{\nocut} & 114 & 52 & 10 & $<10^{-4}$ & $<10^{-4}$ & $+13.3$ \\
+\armfb{0.5} vs.\ \armchk{0.5} & 18 & 73 & 85 & $<10^{-4}$ & $<10^{-4}$ & $-7.6$ \\
+\armfbn{0.5} vs.\ \armnone{0.5} & 19 & 67 & 90 & $<10^{-4}$ & $<10^{-4}$ & $-17.7$ \\
+\bottomrule
+\end{tabular}

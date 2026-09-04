@@ -1,0 +1,39 @@
+%% generata da: python mk_tabs_fact.py
+%% input: C:\usr\PAPER\fp-objective-cutoff\campaign_scip\results_fact.txt
+%% nomi dei bracci: macro \armnone \armchk \armfgl \armfb \armfbn del preambolo
+%% solo il tabular: table/caption/label e il corpo del testo li mette il .tex
+%% T3: found/not-found per run, tutte e quattro le celle (neither inclusa), E1 ed E2
+
+\begin{tabular}{lrrrr}
+\toprule
+comparison ($A$ vs.\ $B$) & $A$ only & $B$ only & both & neither \\
+\midrule
+\multicolumn{5}{l}{\emph{E1: the pilot finds a solution (176 instances)}} \\
+\armchk{\nocut} vs.\ \armnone{\nocut} & 0 & 0 & 856 & 24 \\
+\armchk{0.5} vs.\ \armnone{0.5} & 0 & 0 & 840 & 40 \\
+\armnone{0.5} vs.\ \armnone{\nocut} & 8 & 24 & 832 & 16 \\
+\armchk{0.5} vs.\ \armchk{\nocut} & 8 & 24 & 832 & 16 \\
+\armchk{0.95} vs.\ \armchk{\nocut} & 8 & 24 & 832 & 16 \\
+\armchk{0.95} vs.\ \armchk{0.5} & 0 & 0 & 840 & 40 \\
+\armfgl{0.5} vs.\ \armchk{0.5} & 0 & 0 & 840 & 40 \\
+\armfgl{0.95} vs.\ \armchk{0.95} & 0 & 0 & 840 & 40 \\
+\armfgl{\nocut} vs.\ \armchk{\nocut} & 0 & 0 & 856 & 24 \\
+\armfgl{0.5} vs.\ \armchk{\nocut} & 8 & 24 & 832 & 16 \\
+\armfb{0.5} vs.\ \armchk{0.5} & 6 & 313 & 527 & 34 \\
+\armfbn{0.5} vs.\ \armnone{0.5} & 6 & 380 & 460 & 34 \\
+\midrule
+\multicolumn{5}{l}{\emph{E2: the pilot finds nothing (248 instances)}} \\
+\armchk{\nocut} vs.\ \armnone{\nocut} & 2 & 3 & 76 & 1\,159 \\
+\armchk{0.5} vs.\ \armnone{0.5} & 1 & 1 & 69 & 1\,169 \\
+\armnone{0.5} vs.\ \armnone{\nocut} & 17 & 26 & 53 & 1\,144 \\
+\armchk{0.5} vs.\ \armchk{\nocut} & 17 & 25 & 53 & 1\,145 \\
+\armchk{0.95} vs.\ \armchk{\nocut} & 16 & 25 & 53 & 1\,146 \\
+\armchk{0.95} vs.\ \armchk{0.5} & 1 & 2 & 68 & 1\,169 \\
+\armfgl{0.5} vs.\ \armchk{0.5} & 0 & 1 & 69 & 1\,170 \\
+\armfgl{0.95} vs.\ \armchk{0.95} & 2 & 2 & 67 & 1\,169 \\
+\armfgl{\nocut} vs.\ \armchk{\nocut} & 0 & 0 & 78 & 1\,162 \\
+\armfgl{0.5} vs.\ \armchk{\nocut} & 16 & 25 & 53 & 1\,146 \\
+\armfb{0.5} vs.\ \armchk{0.5} & 12 & 55 & 15 & 1\,158 \\
+\armfbn{0.5} vs.\ \armnone{0.5} & 9 & 55 & 15 & 1\,161 \\
+\bottomrule
+\end{tabular}

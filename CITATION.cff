@@ -1,0 +1,36 @@
+cff-version: 1.2.0
+message: "If you use this software or the data in it, please cite the paper below."
+title: "Feasibility Pump with Objective Cutoff: reproducibility package"
+abstract: >-
+  Code, data and scripts behind the paper "Feasibility Pump with Objective
+  Cutoff: A Computational Study": the patch chain and build recipe for the
+  modified SCIP feasibility pump, the factorial campaign on MIPLIB 2017, the
+  from-scratch pump prototype with its grid of runs, the target experiment on
+  Gurobi, and the aggregators that regenerate every table and figure of the
+  paper from the raw result files.
+type: software
+authors:
+  - family-names: Fischetti
+    given-names: Matteo
+    affiliation: "Department of Information Engineering, University of Padova, Italy"
+    email: matteo.fischetti@unipd.it
+license: MIT
+repository-code: "https://github.com/<user>/fp-objective-cutoff"
+keywords:
+  - mixed-integer linear programming
+  - feasibility pump
+  - primal heuristics
+  - objective cutoff
+  - SCIP
+  - MIPLIB 2017
+date-released: 2026-09-04
+preferred-citation:
+  type: article
+  title: "Feasibility Pump with Objective Cutoff: A Computational Study"
+  authors:
+    - family-names: Fischetti
+      given-names: Matteo
+      affiliation: "Department of Information Engineering, University of Padova, Italy"
+  year: 2026
+  journal: "Mathematical Programming Computation"
+  notes: "Submitted."

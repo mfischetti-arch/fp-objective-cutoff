@@ -1,0 +1,56 @@
+\begin{table}[t]
+\centering
+\caption{Paired per-instance comparisons. W/L/T is the number of instances on which the
+first policy wins, loses, or ties against the second on the \emph{outcome}, i.e.\ on the
+per-instance median success defined in Table~\ref{tab:target-outcome}; $p$ is the exact
+two-sided sign test on the non-ties; $p_{\mathrm{Holm}}$ is the Holm correction over the 12
+declared tests, namely 2 values of $a$ $\times$ 2 families (benchmark, non-benchmark) $\times$
+3 comparisons --- the \emph{all} rows are reported for information only and are not part of the
+Holm family. \emph{Faster} counts, among the instances solved by both policies, how many times
+the first policy's median time to success is lower than the second's by at least 5\%, how many
+times the second's is lower, and how many times the two tie within that tolerance.}
+\label{tab:target-paired}
+\small
+\setlength{\tabcolsep}{5pt}
+\begin{tabular}{lrcrrc}
+\toprule
+Comparison & $N$ & W/L/T & $p$ & $p_{\mathrm{Holm}}$ & faster W/L/T \\
+\midrule
+\multicolumn{6}{l}{$a=0.5$ --- benchmark} \\
+\addlinespace[1pt]
+\quad \textsc{naive} vs.\ \textsc{test} & 43 & 3/1/39 & 0.625 & 1.000 & 13/6/6 \\
+\quad \textsc{naive} vs.\ \textsc{completion} & 43 & 4/4/35 & 1.000 & 1.000 & 12/8/4 \\
+\quad \textsc{test} vs.\ \textsc{completion} & 43 & 2/4/37 & 0.688 & 1.000 & 13/7/4 \\
+\midrule
+\multicolumn{6}{l}{$a=0.5$ --- non-benchmark} \\
+\addlinespace[1pt]
+\quad \textsc{naive} vs.\ \textsc{test} & 91 & 4/3/84 & 1.000 & 1.000 & 22/26/7 \\
+\quad \textsc{naive} vs.\ \textsc{completion} & 91 & 5/3/83 & 0.727 & 1.000 & 33/16/5 \\
+\quad \textsc{test} vs.\ \textsc{completion} & 91 & 5/4/82 & 1.000 & 1.000 & 29/13/11 \\
+\midrule
+\multicolumn{6}{l}{$a=0.5$ --- all} \\
+\addlinespace[1pt]
+\quad \textsc{naive} vs.\ \textsc{test} & 134 & 7/4/123 & 0.549 & -- & 35/32/13 \\
+\quad \textsc{naive} vs.\ \textsc{completion} & 134 & 9/7/118 & 0.804 & -- & 45/24/9 \\
+\quad \textsc{test} vs.\ \textsc{completion} & 134 & 7/8/119 & 1.000 & -- & 42/20/15 \\
+\midrule
+\multicolumn{6}{l}{$a=0.9$ --- benchmark} \\
+\addlinespace[1pt]
+\quad \textsc{naive} vs.\ \textsc{test} & 43 & 1/1/41 & 1.000 & 1.000 & 13/10/8 \\
+\quad \textsc{naive} vs.\ \textsc{completion} & 43 & 0/3/40 & 0.250 & 1.000 & 16/9/7 \\
+\quad \textsc{test} vs.\ \textsc{completion} & 43 & 0/3/40 & 0.250 & 1.000 & 16/6/10 \\
+\midrule
+\multicolumn{6}{l}{$a=0.9$ --- non-benchmark} \\
+\addlinespace[1pt]
+\quad \textsc{naive} vs.\ \textsc{test} & 91 & 3/2/86 & 1.000 & 1.000 & 28/25/16 \\
+\quad \textsc{naive} vs.\ \textsc{completion} & 91 & 0/5/86 & 0.062 & 0.688 & 39/26/7 \\
+\quad \textsc{test} vs.\ \textsc{completion} & 91 & 0/6/85 & 0.031 & 0.375 & 45/7/19 \\
+\midrule
+\multicolumn{6}{l}{$a=0.9$ --- all} \\
+\addlinespace[1pt]
+\quad \textsc{naive} vs.\ \textsc{test} & 134 & 4/3/127 & 1.000 & -- & 41/35/24 \\
+\quad \textsc{naive} vs.\ \textsc{completion} & 134 & 0/8/126 & 0.008 & -- & 55/35/14 \\
+\quad \textsc{test} vs.\ \textsc{completion} & 134 & 0/9/125 & 0.004 & -- & 61/13/29 \\
+\bottomrule
+\end{tabular}
+\end{table}

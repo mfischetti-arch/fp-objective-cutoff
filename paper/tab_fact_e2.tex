@@ -1,0 +1,29 @@
+%% generata da: python mk_tabs_fact.py
+%% input: C:\usr\PAPER\fp-objective-cutoff\campaign_scip\results_fact.txt
+%% nomi dei bracci: macro \armnone \armchk \armfgl \armfb \armfbn del preambolo
+%% solo il tabular: table/caption/label e il corpo del testo li mette il .tex
+%% T1, strato E2: 248 istanze, 12 bracci x 5 semi
+
+\begin{tabular}{lrrrrrrrrrr}
+\toprule
+ & \multicolumn{2}{c}{with a solution} & \multicolumn{5}{c}{medians} & \multicolumn{3}{c}{completion LPs} \\
+\cmidrule(lr){2-3}\cmidrule(lr){4-8}\cmidrule(lr){9-11}
+variant & inst. & runs & gap (\%) & PI/TL (\%) & $t_{\mathrm{first}}$ (s) & rounds & LP iter. & calls & feas. & infeas. \\
+\midrule
+\armnone{\nocut} & 27/248 & 79/1\,240 & 100.00 & 100.0 & 19.83 & 354 & 28\,622 & -- & -- & -- \\
+\armnone{0.5} & 23/248 & 70/1\,240 & 100.00 & 100.0 & 19.75 & 261 & 32\,250 & -- & -- & -- \\
+\addlinespace
+\armchk{\nocut} & 26/248 & 78/1\,240 & 100.00 & 100.0 & 19.52 & 325 & 27\,574 & -- & -- & -- \\
+\armchk{0.5} & 23/248 & 70/1\,240 & 100.00 & 100.0 & 19.87 & 244 & 29\,582 & -- & -- & -- \\
+\armchk{0.75} & 22/248 & 68/1\,240 & 100.00 & 100.0 & 19.86 & 249 & 29\,374 & -- & -- & -- \\
+\armchk{0.9} & 23/248 & 72/1\,240 & 100.00 & 100.0 & 19.60 & 262 & 28\,958 & -- & -- & -- \\
+\armchk{0.95} & 23/248 & 69/1\,240 & 100.00 & 100.0 & 19.57 & 246 & 29\,278 & -- & -- & -- \\
+\addlinespace
+\armfgl{\nocut} & 26/248 & 78/1\,240 & 100.00 & 100.0 & 19.82 & 317 & 27\,494 & 3\,192\,751 & 28 & 3\,170\,429 \\
+\armfgl{0.5} & 23/248 & 69/1\,240 & 100.00 & 100.0 & 19.82 & 242 & 29\,368 & 3\,187\,843 & 53 & 3\,187\,787 \\
+\armfgl{0.95} & 23/248 & 69/1\,240 & 100.00 & 100.0 & 19.73 & 245 & 28\,800 & 3\,196\,657 & 57 & 3\,190\,506 \\
+\addlinespace
+\armfb{0.5} & 11/248 & 27/1\,240 & 100.00 & 100.0 & 15.40 & 64 & 44\,872 & -- & -- & -- \\
+\armfbn{0.5} & 9/248 & 24/1\,240 & 100.00 & 100.0 & 11.11 & 66 & 47\,584 & -- & -- & -- \\
+\bottomrule
+\end{tabular}
