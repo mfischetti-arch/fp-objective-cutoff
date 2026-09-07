@@ -130,11 +130,31 @@ the only way to redo that check. Also note that the arms without `tryrounded`
 when the run *reports* a solution, not when it finds it. The replay is valid on
 the three recovery arms only.
 
+## The settings file of a cell
+
+`job21_factorial.sh` writes, for every (instance, arm, seed), a SCIP settings
+file `sets_f/<instance>_<arm>_s<seed>.set` and a command file `.cmd`, then runs
+`scip -b <cmd>`. `settings/10teams_rec50_s0.set` and `.cmd` are the two files
+of one cell, reproduced verbatim (instance `10teams`, arm `rec50`, seed 0).
+`limits/time` is 20 × t_LP clamped to [20, 300] s, with t_LP measured by the
+probe run of the same task (here 20 s), and `misc/referencevalue` is the
+first-LP value read from the same probe. Between arms only four parameters
+change, and they map onto the table of the arms above: `cutlam` is the cutoff
+level λ (`-1` for none), `tryrounded = TRUE` is the direct test of x̂,
+`lpfix = TRUE` is the FGL completion, `cutfallback = TRUE` is the fallback;
+between seeds only `randomization/randomseedshift` changes. In the `.cmd`,
+`set heuristics emphasis off` switches every primal heuristic off and the
+`.set` loaded right after re-enables the pump alone (`freq = 1`). The
+parameters that SCIP's master does not have (`cutlam`, `tryrounded`, `moat`,
+`cutosc`, `cutfallback`, `lpfix`, `rcut`) are the ones added by the patches in
+`../scip/`; the `bare` arm has `cutlam = -1` and `tryrounded = FALSE`.
+
 ## Files
 
 | file | role |
 |---|---|
 | `job21_factorial.sh` | the campaign; SLURM array, 463 instances × 12 arms × 5 seeds |
+| `settings/10teams_rec50_s0.set`, `.cmd` | the settings and command files of one cell, verbatim (section above) |
 | `validate_sols.sh` | revalidation of every `.sol` on a fresh SCIP and the original model |
 | `collect_res.py` | raw logs → `results_fact.txt`, one pass per instance |
 | `agg_fact.py` | all the definitions; invariants, exclusions, the Markdown report |

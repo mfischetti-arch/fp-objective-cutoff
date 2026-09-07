@@ -1,0 +1,17 @@
+\begin{table}[t]
+\centering\small
+\caption{The oscillating cutoff on Gurobi: 272 0--1 instances of MIPLIB~2017 (96 on which \textsc{fgl} finds nothing on any of its five seeds), time limit $\min(300,\max(20,20\,t_{\mathrm{LP}}))$\,s, one instance per blade with all runs in batches of four. ``Solved'' is an instance with a point feasible for the original model, re-checked by Gurobi; for the seeded policies, on at least three seeds of five. ``vs.\ \textsc{fgl}'' counts instances won--tied--lost on the outcome, with the exact two-sided sign test on the discordant ones and Holm over the five comparisons. ``Time'' and ``cost'' are counted on the instances both solve: faster/slower than \textsc{fgl} by more than 5\%, and first solution cheaper/dearer than \textsc{fgl}'s; the last column is the median ratio of times.}
+\label{tab:react}
+\begin{tabular}{lrrrrrrrrr}
+\toprule
+policy & solved & of 96 & vs.\ \textsc{fgl} & $p$ & Holm & time $+/-$ & cost $+/-$ & $t/t_{\textsc{fgl}}$ \\
+\midrule
+\textsc{fgl} & 158 & 0 & -- & -- & -- & -- & -- & -- \\
+\textsc{sweep} & 147 & 8 & 12--237--23 & 0.090 & 0.358 & 11/120 & 26/55 & 1.5 \\
+\textsc{sweep-e} & 150 & 11 & 15--234--23 & 0.256 & 0.568 & 15/120 & 19/62 & 1.6 \\
+\textsc{flip+sweep} & 156 & 3 & 5--260--7 & 0.774 & 0.774 & 10/131 & 39/39 & 1.4 \\
+\textsc{sweep$\to$fgl} & 165 & 11 & 14--251--7 & 0.189 & 0.568 & 15/135 & 16/55 & 1.7 \\
+\textsc{fgl$\to$fgl} & 153 & 0 & 0--267--5 & 0.062 & 0.312 & 24/2 & 2/2 & 1.0 \\
+\bottomrule
+\end{tabular}
+\end{table}

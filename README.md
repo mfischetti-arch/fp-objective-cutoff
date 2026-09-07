@@ -27,9 +27,10 @@ CITATION.cff           how to cite the software
 .gitignore
 
 scip/                  the patched SCIP: patch chain, build script with pinned commits, NOTICE
-campaign_scip/         the factorial campaign of Sections 5-6 (SCIP): job, aggregators, raw results
+campaign_scip/         the factorial campaign of Sections 5-6 (SCIP): job, aggregators, raw results, the settings file of one cell
 prototype/             the from-scratch pump of Section 2: fp.py, its grid of runs, the band aggregator
-campaign_gurobi/       experiment E3 of Section 7 (Gurobi): the three-phase target experiment
+campaign_gurobi/       experiment E3 of Section 7 (Gurobi): the three-phase target experiment;
+                       the objective sweep recorded in the conclusions (fp_react.py, its logs, its table)
 paper/                 the .tex table bodies, the figure script, and the manuscript PDF
 ```
 
@@ -81,6 +82,8 @@ those of `paper/manuscript.pdf`.
 | **numbers quoted in the running text** of Sections 6-8 (medians, counts, cost of the completion, pure vs mixed, split by size) | `cd campaign_scip && python agg_fact.py results_fact.txt --valid validated.txt` | a Markdown report on stdout; the manuscript carries a `%%` comment next to each quoted number saying which line of this report it comes from |
 | **independent validation** of every `.sol` (Section 5) | `cd campaign_scip && python agg_fact.py results_fact.txt --valid validated.txt` | the section "Validazione indipendente" of the same report, read from `validated.txt` |
 | **declared exclusions** (37 + 2 instances, Section 6) | same command | the section "Esclusioni dichiarate" of the same report |
+| **the "For the record" sentence of the conclusions** (the cutoff as the pump's perturbation: 147 vs 158 solved on 272 instances, +14/−7 in the portfolio) | `cd campaign_gurobi && tar xzf results/logs_r26_4949586.tgz && python mk_tab_react.py "logs/r26_4949586_*.log"` | `campaign_gurobi/val_react.tex` (the `\Rc...` macros the sentence uses) and `campaign_gurobi/tab_react.tex` (the full table, supplementary material) |
+| **the settings of one cell** of the SCIP campaign (Section 5) | none: `campaign_scip/settings/10teams_rec50_s0.set` and `.cmd` are two files written by `job21_factorial.sh`, reproduced verbatim | — |
 
 `mk_tabs_fact.py` writes into `../paper` by default, i.e. into `paper/` of this
 repository; `python mk_tabs_fact.py --out DIR` writes elsewhere.
@@ -132,6 +135,9 @@ here (given the cluster time), and all available from the author on request.
    `campaign_scip/results_fact.txt`, 28,243 `RES|` rows — *is* in this package
    and is the source of every table. The raw logs are also the input of
    `replay_tl.py`, which cannot therefore be re-run from this package alone.
+   The raw logs of the Gurobi sweep campaign quoted in the conclusions are
+   small and **are** included: `campaign_gurobi/results/logs_r26_4949586.tgz`
+   (272 files, 229 KB compressed).
 
    **Proposal for the published version of the artefact:** attach the 436 MB
    archive as a **GitHub release asset** (the 2 GB per-file limit is ample), or

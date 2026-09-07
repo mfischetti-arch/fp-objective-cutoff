@@ -17,7 +17,8 @@ original constraints, cutoff excluded.
 |---|---|
 | `fp.py` | the instrumented from-scratch pump (FGL 2005 objective term, FP 2.0 perturbation and restart, Achterberg-Berthold geometric α, both terms normalised in the Euclidean norm) |
 | `agg_band.py` | the aggregator: the three tables on the band between the cutoff and the incumbent |
-| `inst_list.txt` | the 37 instances, one per line: `family ⟨tab⟩ size band ⟨tab⟩ path ⟨tab⟩ n ⟨tab⟩ ncons ⟨tab⟩ nnz` |
+| `inst_list.txt` | the stratified sample the 37 instances come from, one per line: `family ⟨tab⟩ size band ⟨tab⟩ path ⟨tab⟩ n ⟨tab⟩ ncons ⟨tab⟩ nnz`. 60 rows, 20 per family, stratified by size class and drawn by `sample_inst.py` (seed 2026) from the census of pure-binary instances; `air03` and `disctom` appear under both MIPLIB releases, so 58 distinct instances. On 21 of them there is no band to survey and no `.json` is written: on 14 the pump without a cutoff finds no solution within the limit (`status: no_firstsol` on stdout), on 7 its first solution already equals z_LP (`fp.py` exits with `[skip]`); the 37 that enter the tables are the rest |
+| `sample_inst.py` | the stratified sampler that wrote `inst_list.txt` |
 | `grid/` | **the raw runs**: 999 `.json` (one per run) and 259 `.csv` (one per iteration trace), ~65 MB |
 
 The grid covers three families — OR-Library set covering, MIPLIB 2003, MIPLIB

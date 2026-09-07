@@ -1,4 +1,4 @@
-# `campaign_gurobi/` — experiment E3, the target experiment (Section 7)
+# `campaign_gurobi/` — experiment E3, the target experiment (Section 7), and the objective sweep of the conclusions
 
 E3 rewrites, on **our own code and on Gurobi**, the experiment that inside SCIP
 is entangled with the design of the main campaign. The user has the first
@@ -154,6 +154,50 @@ job id, the date, the code commit, the instance list, the parameters, where the
 logs are and what came out. It is the machine-readable provenance of this
 directory.
 
+## The objective sweep (the "For the record" sentence of the conclusions)
+
+The paper's conclusions record one more experiment, in a single sentence: the
+cutoff used as the pump's **perturbation** instead of the random flips and
+restarts of the from-scratch FGL pump of Section 7. A constraint on cᵀx sweeps
+the objective range and is moved at every repeated rounding; nothing is random.
+The experiment was written as a full section, audited, and taken out because
+its only outcome is a loss without significance; the sentence and the numbers
+stay for the record, the full table is supplementary material.
+
+* **Code**: `fp_react.py` (imports `fp_target.py` and `fp.py` of this
+  directory; md5 of the file that produced the results: `a28bf7a6…`). The arm
+  names are those of its `opts()`; `mk_tab_react.py` maps them to the rows of
+  the table: `fgl` the random pump (five seeds, median), `oh` the sweep,
+  `eoh` the sweep moved at every repeated rounding, `fl` flips and sweep
+  together, `pf` the sweep run first and the random pump after it on the
+  remaining budget, `ff` the control that restarts the random pump the same
+  way.
+* **Testbed**: `inst_react.txt`, 272 pure 0-1 or mixed instances with a first
+  LP within 5 s, taken from the pilot cache of E3 (176 on which the pilot pump
+  finds a solution, 96 on which it fails); built by `mk_react_list.py`. The time
+  limit is the clamp of 20 × t_LP to [20, 300] s, as in Section 5.
+* **Runner**: `job26_react.sh`, one instance per SLURM task, all runs of an
+  instance on the same blade (Xeon E3-1220 v2, one thread each, batches of
+  four); `ARMS` and `SEEDS` come from the environment.
+* **Campaign**: job **4949586** ("paper2" in `campaigns.json`): 272 instances ×
+  22 runs (four seeded arms × 5 seeds + two deterministic arms) = 5,984 runs,
+  none in error. An earlier run of the same design (job 4948984) had 150 runs
+  aborted by an uncapped auxiliary LP and is superseded; it is not shipped.
+* **Raw logs**: `results/logs_r26_4949586.tgz` (272 files, one per instance).
+* **Regenerating** the sentence's macros and the table:
+
+  ```bash
+  cd campaign_gurobi
+  tar xzf results/logs_r26_4949586.tgz              # creates logs/r26_4949586_*.log
+  python mk_tab_react.py "logs/r26_4949586_*.log"   # writes tab_react.tex and val_react.tex here
+  ```
+
+  `val_react.tex` holds the `\Rc...` macros (`\RcN` = 272, `\RcOhAll` = 147,
+  `\RcFglAll` = 158, `\RcPfWin` = 14, `\RcPfLoss` = 7, …); `tab_react.tex` is
+  the full table. The script checks its invariants and stops on a violation.
+  The copies shipped here were regenerated from the shipped logs and are
+  identical, up to the two `%%` provenance lines.
+
 ## Files
 
 | file | role |
@@ -174,3 +218,8 @@ directory.
 | `campaigns.json` | one entry per `sbatch`: job id, date, commit, list, parameters, logs, outcome |
 | `results/*.res` | **the raw results**; `eval50.res` and `eval90.res` are the ones the paper's tables are built on |
 | `tab_target_outcome.tex`, `tab_target_paired.tex` | the generated tables (copies in `../paper/`) |
+| `fp_react.py` | the pump with the objective sweep as perturbation (section above) |
+| `job26_react.sh`, `mk_react_list.py`, `inst_react.txt` | the runner, the list builder and the list of the sweep campaign |
+| `agg_react.py`, `mk_tab_react.py` | parsing and statistics of the sweep logs; the table and the macros |
+| `results/logs_r26_4949586.tgz` | **the raw logs of the sweep campaign**, job 4949586 |
+| `tab_react.tex`, `val_react.tex` | the generated table (supplementary material) and the macros of the conclusions' sentence |

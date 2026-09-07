@@ -1,0 +1,274 @@
+# name	mps	tlp	TL	pilot	n_bin	n_cont	zlp	zinc
+# 272 istanze, t_LP <= 5 s; pilota found=176 failed=96 slow=0; somma TL=7107 s
+10teams	/nfsd/rop/instances/miplib2017/10teams.mps.gz	0.0543	20	found	1800	225	916.9999999999998	994.0
+2club200v15p5scn	/nfsd/rop/instances/miplib2017/2club200v15p5scn.mps.gz	0.3480	20	found	200	0	-121.22222222222219	-27.0
+30_70_45_05_100	/nfsd/rop/instances/miplib2017/30_70_45_05_100.mps.gz	1.0025	20	found	10771	1	8.099999999997495	190.0
+30_70_45_095_100	/nfsd/rop/instances/miplib2017/30_70_45_095_100.mps.gz	1.1181	22	found	10975	1	3.0000000000032205	163.0
+30_70_45_095_98	/nfsd/rop/instances/miplib2017/30_70_45_095_98.mps.gz	0.8917	20	found	10989	1	11.500000000002801	194.0
+ab51-40-100	/nfsd/rop/instances/miplib2017/ab51-40-100.mps.gz	0.9010	20	found	12675	0	-10887846283.417503	-1823703279.0
+ab67-40-100	/nfsd/rop/instances/miplib2017/ab67-40-100.mps.gz	1.0357	21	found	12812	0	-11552655490.987167	-1165709213.0
+ab69-40-100	/nfsd/rop/instances/miplib2017/ab69-40-100.mps.gz	1.1019	22	found	12622	0	-11558979156.970045	-1718283415.0
+ab71-20-100	/nfsd/rop/instances/miplib2017/ab71-20-100.mps.gz	0.4200	20	found	6689	0	-10887769664.974136	-1910888280.0
+ab72-40-100	/nfsd/rop/instances/miplib2017/ab72-40-100.mps.gz	0.8497	20	found	12370	0	-11608837352.473429	-1204674107.0
+academictimetablebig	/nfsd/rop/instances/miplib2017/academictimetablebig.mps.gz	3.0422	61	failed	168974	0	25.444444444444443	
+academictimetablesmall	/nfsd/rop/instances/miplib2017/academictimetablesmall.mps.gz	0.3627	20	failed	28926	0	0.0	
+acc-tight2	/nfsd/rop/instances/miplib2017/acc-tight2.mps.gz	0.0621	20	found	1620	0	0.0	0.0
+acc-tight4	/nfsd/rop/instances/miplib2017/acc-tight4.mps.gz	0.0778	20	failed	1620	0	0.0	
+acc-tight5	/nfsd/rop/instances/miplib2017/acc-tight5.mps.gz	0.4248	20	failed	1339	0	0.0	
+air03	/nfsd/rop/instances/miplib2017/air03.mps.gz	0.0759	20	found	10757	0	338864.25	505880.0
+air04	/nfsd/rop/instances/miplib2017/air04.mps.gz	0.6393	20	found	8904	0	55535.436388224276	60928.0
+air05	/nfsd/rop/instances/miplib2017/air05.mps.gz	0.1921	20	found	7195	0	25877.609267851407	30974.0
+aligninq	/nfsd/rop/instances/miplib2017/aligninq.mps.gz	0.0493	20	found	1830	1	2654.736802205334	2743.0
+app2-1	/nfsd/rop/instances/miplib2017/app2-1.mps.gz	0.0103	20	found	3283	0	19294.125	418219.086
+app2-2	/nfsd/rop/instances/miplib2017/app2-2.mps.gz	0.0035	20	found	1226	0	212040.35714285716	243512.5
+assign1-10-4	/nfsd/rop/instances/miplib2017/assign1-10-4.mps.gz	0.0814	20	found	520	52	353.9929264711326	478.0
+assign1-5-8	/nfsd/rop/instances/miplib2017/assign1-5-8.mps.gz	0.0122	20	found	130	26	183.36255497382203	246.0
+b-ball	/nfsd/rop/instances/miplib2017/b-ball.mps.gz	0.0200	20	found	88	12	-1.8181818181818181	-1.5
+bab1	/nfsd/rop/instances/miplib2017/bab1.mps.gz	0.2466	20	failed	61152	0	-286923.824223	
+bab5	/nfsd/rop/instances/miplib2017/bab5.mps.gz	1.0181	20	failed	21600	0	-124657.64141322495	
+biella1	/nfsd/rop/instances/miplib2017/biella1.mps.gz	1.1475	23	found	6110	1218	3060037.4307631087	3434062.9899999998
+blp-ar98	/nfsd/rop/instances/miplib2017/blp-ar98.mps.gz	0.1078	20	found	15806	215	5891.226580294854	27215.075241599992
+blp-ic97	/nfsd/rop/instances/miplib2017/blp-ic97.mps.gz	0.0791	20	found	9753	92	3846.3586670533336	7589.1521456
+blp-ic98	/nfsd/rop/instances/miplib2017/blp-ic98.mps.gz	0.1024	20	found	13550	90	4331.168352598079	13049.349028799998
+blp-ir98	/nfsd/rop/instances/miplib2017/blp-ir98.mps.gz	0.0580	20	found	6031	66	2235.2023230961904	5160.191796799999
+bnatt400	/nfsd/rop/instances/miplib2017/bnatt400.mps.gz	0.0812	20	failed	3600	0	0.0	
+bppc4-08	/nfsd/rop/instances/miplib2017/bppc4-08.mps.gz	0.0410	20	found	1454	2	51.59000000000001	92.0
+bppc6-02	/nfsd/rop/instances/miplib2017/bppc6-02.mps.gz	0.3049	20	found	4782	2	108.33999999999992	184.0
+bppc6-06	/nfsd/rop/instances/miplib2017/bppc6-06.mps.gz	0.3226	20	found	3920	2	200.63333333333344	360.0
+cap6000	/nfsd/rop/instances/miplib2017/cap6000.mps.gz	0.2101	20	found	6000	0	-2451537.3250240455	-2354320.0
+chromaticindex1024-7	/nfsd/rop/instances/miplib2017/chromaticindex1024-7.mps.gz	3.0206	60	found	73728	0	3.0	4.0
+chromaticindex128-5	/nfsd/rop/instances/miplib2017/chromaticindex128-5.mps.gz	0.1707	20	found	9216	0	3.0	4.0
+chromaticindex256-8	/nfsd/rop/instances/miplib2017/chromaticindex256-8.mps.gz	0.4943	20	found	18432	0	3.0	4.0
+chromaticindex32-8	/nfsd/rop/instances/miplib2017/chromaticindex32-8.mps.gz	0.1191	20	found	2304	0	2.9999999999999996	4.0
+chromaticindex512-7	/nfsd/rop/instances/miplib2017/chromaticindex512-7.mps.gz	1.5091	30	found	36864	0	2.9999999999999996	4.0
+circ10-3	/nfsd/rop/instances/miplib2017/circ10-3.mps.gz	0.2772	20	failed	2700	0	140.0	
+co-100	/nfsd/rop/instances/miplib2017/co-100.mps.gz	0.7196	20	failed	48417	0	917102.2144266693	
+cod105	/nfsd/rop/instances/miplib2017/cod105.mps.gz	1.0599	21	found	1024	0	-18.285714285714306	0.0
+core2536-691	/nfsd/rop/instances/miplib2017/core2536-691.mps.gz	2.8228	56	found	15284	9	688.4760340423478	711.0
+csched007	/nfsd/rop/instances/miplib2017/csched007.mps.gz	0.0302	20	failed	1457	301	269.25158730158716	
+csched008	/nfsd/rop/instances/miplib2017/csched008.mps.gz	0.0134	20	found	1284	252	171.0	190.0
+csched010	/nfsd/rop/instances/miplib2017/csched010.mps.gz	0.0445	20	failed	1457	301	332.4227272727272	
+cvs08r139-94	/nfsd/rop/instances/miplib2017/cvs08r139-94.mps.gz	0.0661	20	found	1864	0	-138.9999999999989	-5.0
+cvs16r106-72	/nfsd/rop/instances/miplib2017/cvs16r106-72.mps.gz	0.0184	20	found	2848	0	-106.00000000000274	-2.0
+cvs16r128-89	/nfsd/rop/instances/miplib2017/cvs16r128-89.mps.gz	0.0277	20	found	3472	0	-127.99999999999781	-2.0
+cvs16r70-62	/nfsd/rop/instances/miplib2017/cvs16r70-62.mps.gz	0.0141	20	found	2112	0	-69.99999999999923	0.0
+cvs16r89-60	/nfsd/rop/instances/miplib2017/cvs16r89-60.mps.gz	0.0152	20	found	2384	0	-88.9999999999994	0.0
+d20200	/nfsd/rop/instances/miplib2017/d20200.mps.gz	0.3750	20	found	4000	0	12229.625788043884	15334.0
+dc1c	/nfsd/rop/instances/miplib2017/dc1c.mps.gz	3.0098	60	found	8380	1659	1754946.8636381596	15558347.302089998
+decomp1	/nfsd/rop/instances/miplib2017/decomp1.mps.gz	0.0646	20	failed	10735	0	-120.0	
+decomp2	/nfsd/rop/instances/miplib2017/decomp2.mps.gz	0.0683	20	failed	14387	0	-160.0	
+disctom	/nfsd/rop/instances/miplib2017/disctom.mps.gz	0.4488	20	found	10000	0	-4999.999999999997	-5000.0
+dolom1	/nfsd/rop/instances/miplib2017/dolom1.mps.gz	3.3798	68	found	9720	1892	6556066.068315252	172039223.2003
+drayage-100-12	/nfsd/rop/instances/miplib2017/drayage-100-12.mps.gz	0.0849	20	failed	11025	65	21458.311901092522	
+drayage-100-23	/nfsd/rop/instances/miplib2017/drayage-100-23.mps.gz	0.0948	20	failed	11025	65	11714.141979217546	
+drayage-25-23	/nfsd/rop/instances/miplib2017/drayage-25-23.mps.gz	0.0962	20	failed	11025	65	11714.141979217544	
+drayage-25-27	/nfsd/rop/instances/miplib2017/drayage-25-27.mps.gz	0.0977	20	failed	11025	65	26785.79704284667	
+drayage-25-32	/nfsd/rop/instances/miplib2017/drayage-25-32.mps.gz	0.0699	20	failed	11025	65	32519.99725341796	
+eil33-2	/nfsd/rop/instances/miplib2017/eil33-2.mps.gz	0.0288	20	found	4516	0	811.278996122807	2778.0055469999998
+eilA101-2	/nfsd/rop/instances/miplib2017/eilA101-2.mps.gz	0.7523	20	failed	65832	0	803.3738883297593	
+eilC76-2	/nfsd/rop/instances/miplib2017/eilC76-2.mps.gz	0.7509	20	found	28599	0	725.7544578514298	1605.794346
+ex1010-pi	/nfsd/rop/instances/miplib2017/ex1010-pi.mps.gz	3.8752	78	found	25200	0	220.6700870448364	243.0
+ex9	/nfsd/rop/instances/miplib2017/ex9.mps.gz	1.9427	39	failed	10404	0	80.99999999999969	
+f2gap201600	/nfsd/rop/instances/miplib2017/f2gap201600.mps.gz	0.0211	20	found	1600	0	76429.86229621104	76453.0
+f2gap401600	/nfsd/rop/instances/miplib2017/f2gap401600.mps.gz	0.0213	20	found	1600	0	82274.2374341957	82307.0
+f2gap40400	/nfsd/rop/instances/miplib2017/f2gap40400.mps.gz	0.0433	20	found	400	0	20650.898153963255	20772.0
+f2gap801600	/nfsd/rop/instances/miplib2017/f2gap801600.mps.gz	0.0451	20	found	1600	0	86570.12086656285	86679.0
+fast0507	/nfsd/rop/instances/miplib2017/fast0507.mps.gz	0.5448	20	found	63009	0	172.14556667654892	190.0
+fhnw-binpack4-48	/nfsd/rop/instances/miplib2017/fhnw-binpack4-48.mps.gz	0.0859	20	failed	3605	105	0.0	
+fhnw-binpack4-77	/nfsd/rop/instances/miplib2017/fhnw-binpack4-77.mps.gz	0.1172	20	failed	3816	108	0.0	
+fhnw-schedule-paira100	/nfsd/rop/instances/miplib2017/fhnw-schedule-paira100.mps.gz	0.1215	20	found	5050	100	-36.643680874092354	-0.0057410015751332985
+fhnw-schedule-paira200	/nfsd/rop/instances/miplib2017/fhnw-schedule-paira200.mps.gz	1.2035	24	found	20100	200	-73.8264792090405	-1.0475877276843357
+fhnw-schedule-pairb200	/nfsd/rop/instances/miplib2017/fhnw-schedule-pairb200.mps.gz	0.4554	20	failed	40000	200	-73.8264792090405	
+fhnw-schedule-pairb400	/nfsd/rop/instances/miplib2017/fhnw-schedule-pairb400.mps.gz	0.7446	20	failed	160000	400	-146.9410786111565	
+fiber	/nfsd/rop/instances/miplib2017/fiber.mps.gz	0.0278	20	found	1254	44	156082.51759259257	1686325.4800000002
+glass-sc	/nfsd/rop/instances/miplib2017/glass-sc.mps.gz	0.1014	20	found	214	0	14.0802958565341	38.0
+glass4	/nfsd/rop/instances/miplib2017/glass4.mps.gz	0.0022	20	found	302	20	800002400.0	4800048000.0
+gmu-35-40	/nfsd/rop/instances/miplib2017/gmu-35-40.mps.gz	0.0122	20	found	1200	5	-2406943.5563428816	-1927219.6191999996
+gmu-35-50	/nfsd/rop/instances/miplib2017/gmu-35-50.mps.gz	0.0144	20	found	1914	5	-2608070.315743008	-1863954.7002999994
+gmut-75-50	/nfsd/rop/instances/miplib2017/gmut-75-50.mps.gz	1.1130	22	found	68859	6	-14182312.661731314	-13321620.12730001
+gmut-76-40	/nfsd/rop/instances/miplib2017/gmut-76-40.mps.gz	0.4057	20	found	24332	6	-14171086.316074528	-13361709.868599996
+gmut-76-50	/nfsd/rop/instances/miplib2017/gmut-76-50.mps.gz	0.9180	20	found	68859	6	-14173884.188063156	-13169780.201399999
+graph20-20-1rand	/nfsd/rop/instances/miplib2017/graph20-20-1rand.mps.gz	0.0419	20	found	2183	0	-37.0	-5.0
+graph20-80-1rand	/nfsd/rop/instances/miplib2017/graph20-80-1rand.mps.gz	0.9267	20	failed	16263	0	-117.0	
+graph40-20-1rand	/nfsd/rop/instances/miplib2017/graph40-20-1rand.mps.gz	2.3170	46	failed	31243	0	-157.0	
+hanoi5	/nfsd/rop/instances/miplib2017/hanoi5.mps.gz	0.2176	20	failed	3862	0	1467.0	
+iis-glass-cov	/nfsd/rop/instances/miplib2017/iis-glass-cov.mps.gz	0.1555	20	found	214	0	13.460608514719013	38.0
+iis-hc-cov	/nfsd/rop/instances/miplib2017/iis-hc-cov.mps.gz	0.1825	20	found	297	0	9.517060774198475	38.0
+irp	/nfsd/rop/instances/miplib2017/irp.mps.gz	0.0693	20	found	20315	0	12123.530222333333	14608.098809
+leo1	/nfsd/rop/instances/miplib2017/leo1.mps.gz	0.0704	20	found	6730	1	388573315.5096079	628011616.3199999
+leo2	/nfsd/rop/instances/miplib2017/leo2.mps.gz	0.1285	20	found	11099	1	386421293.2089191	1022633324.5
+liu	/nfsd/rop/instances/miplib2017/liu.mps.gz	0.0133	20	found	1089	67	346.0	5560.0
+loopha13	/nfsd/rop/instances/miplib2017/loopha13.mps.gz	0.5989	20	failed	18150	1206	6.279000000000003	
+mad	/nfsd/rop/instances/miplib2017/mad.mps.gz	0.0016	20	found	200	20	0.0	2.4704
+mas74	/nfsd/rop/instances/miplib2017/mas74.mps.gz	0.0017	20	found	150	1	10482.795280331206	25754.178970900004
+mas76	/nfsd/rop/instances/miplib2017/mas76.mps.gz	0.0015	20	found	150	1	38893.90364052263	48070.601476
+mcsched	/nfsd/rop/instances/miplib2017/mcsched.mps.gz	0.2502	20	found	1745	2	193774.75370662333	441411.0
+mine-166-5	/nfsd/rop/instances/miplib2017/mine-166-5.mps.gz	0.1375	20	found	830	0	-821763677.673139	-416775835.1471654
+mine-90-10	/nfsd/rop/instances/miplib2017/mine-90-10.mps.gz	0.1123	20	found	900	0	-887165318.5102262	-333875116.4216529
+misc07	/nfsd/rop/instances/miplib2017/misc07.mps.gz	0.0051	20	found	259	1	1415.0	3770.0
+mitre	/nfsd/rop/instances/miplib2017/mitre.mps.gz	0.0823	20	failed	10724	0	114740.51848146186	
+mkc	/nfsd/rop/instances/miplib2017/mkc.mps.gz	0.0381	20	found	5323	2	-611.8500000000008	-270.4579999999997
+mod010	/nfsd/rop/instances/miplib2017/mod010.mps.gz	0.0274	20	found	2655	0	6532.083333333333	6880.0
+n2seq36f	/nfsd/rop/instances/miplib2017/n2seq36f.mps.gz	0.0186	20	found	8100	0	52000.0	208600.0
+n2seq36q	/nfsd/rop/instances/miplib2017/n2seq36q.mps.gz	0.1918	20	found	22480	0	52000.0	4204800.0
+n3div36	/nfsd/rop/instances/miplib2017/n3div36.mps.gz	0.1207	20	found	22120	0	114333.37474120082	402800.0
+n3seq24	/nfsd/rop/instances/miplib2017/n3seq24.mps.gz	3.8891	78	found	119856	0	51999.999999999985	126463000.0
+neos-1324574	/nfsd/rop/instances/miplib2017/neos-1324574.mps.gz	0.2729	20	found	5256	0	4.5	19.0
+neos-1330346	/nfsd/rop/instances/miplib2017/neos-1330346.mps.gz	0.1028	20	found	2664	0	4.499999999999999	16.0
+neos-1337307	/nfsd/rop/instances/miplib2017/neos-1337307.mps.gz	0.0756	20	found	2840	0	-203123.97385620917	-201379.0
+neos-1516309	/nfsd/rop/instances/miplib2017/neos-1516309.mps.gz	0.0166	20	found	4500	0	33432.333333333336	39099.0
+neos-1593097	/nfsd/rop/instances/miplib2017/neos-1593097.mps.gz	0.0816	20	failed	18200	260	4424.0	
+neos-1599274	/nfsd/rop/instances/miplib2017/neos-1599274.mps.gz	0.0259	20	found	4500	0	31235.742857142857	35887.6
+neos-1601936	/nfsd/rop/instances/miplib2017/neos-1601936.mps.gz	0.7887	20	found	3906	540	0.999999999999936	43444.0
+neos-1605061	/nfsd/rop/instances/miplib2017/neos-1605061.mps.gz	3.2617	65	failed	3570	541	6.150735294117649	
+neos-2294525-abba	/nfsd/rop/instances/miplib2017/neos-2294525-abba.mps.gz	0.0893	20	failed	10086	756	156.17725062530002	
+neos-2328163-agri	/nfsd/rop/instances/miplib2017/neos-2328163-agri.mps.gz	0.0483	20	failed	2236	0	26069.0	
+neos-3045796-mogo	/nfsd/rop/instances/miplib2017/neos-3045796-mogo.mps.gz	0.0526	20	failed	11016	19	-175.0	
+neos-3116779-oban	/nfsd/rop/instances/miplib2017/neos-3116779-oban.mps.gz	0.0039	20	found	5140	1	0.0	0.0
+neos-3118745-obra	/nfsd/rop/instances/miplib2017/neos-3118745-obra.mps.gz	0.0056	20	found	1130	1	253.83333333333334	352.0
+neos-3148108-pahi	/nfsd/rop/instances/miplib2017/neos-3148108-pahi.mps.gz	0.0935	20	found	12241	0	0.0	0.0
+neos-3209519-ruhr	/nfsd/rop/instances/miplib2017/neos-3209519-ruhr.mps.gz	0.0364	20	failed	8000	675	332.84999999999997	
+neos-3216931-puriri	/nfsd/rop/instances/miplib2017/neos-3216931-puriri.mps.gz	2.8161	56	failed	3268	287	58817.35306581276	
+neos-3226448-wkra	/nfsd/rop/instances/miplib2017/neos-3226448-wkra.mps.gz	3.2443	65	found	10012	0	0.0	0.0
+neos-3237086-abava	/nfsd/rop/instances/miplib2017/neos-3237086-abava.mps.gz	0.2897	20	failed	50192	0	0.0	
+neos-3352863-ancoa	/nfsd/rop/instances/miplib2017/neos-3352863-ancoa.mps.gz	0.7815	20	found	20045	1	27300.428219308844	54200.0
+neos-3402294-bobin	/nfsd/rop/instances/miplib2017/neos-3402294-bobin.mps.gz	0.7352	20	failed	2616	288	0.0	
+neos-3437289-erdre	/nfsd/rop/instances/miplib2017/neos-3437289-erdre.mps.gz	0.0187	20	found	12162	0	0.0	0.0
+neos-3555904-turama	/nfsd/rop/instances/miplib2017/neos-3555904-turama.mps.gz	1.4202	28	failed	37461	0	-41.44999999999999	
+neos-3581454-haast	/nfsd/rop/instances/miplib2017/neos-3581454-haast.mps.gz	0.1376	20	found	7512	600	1640.0000000000014	6835.0
+neos-3691541-lonja	/nfsd/rop/instances/miplib2017/neos-3691541-lonja.mps.gz	0.0400	20	failed	10200	100	-0.07927100867999999	
+neos-3695882-vesdre	/nfsd/rop/instances/miplib2017/neos-3695882-vesdre.mps.gz	0.5416	20	failed	5955	180	-145935.2142857143	
+neos-4322846-ryton	/nfsd/rop/instances/miplib2017/neos-4322846-ryton.mps.gz	0.9123	20	failed	108699	1	0.41984836400000025	
+neos-4359986-taipa	/nfsd/rop/instances/miplib2017/neos-4359986-taipa.mps.gz	1.2392	25	failed	25095	35	0.29659273952723486	
+neos-4391920-timok	/nfsd/rop/instances/miplib2017/neos-4391920-timok.mps.gz	2.6104	52	failed	93786	60	8.630747026741603e-06	
+neos-4409277-trave	/nfsd/rop/instances/miplib2017/neos-4409277-trave.mps.gz	1.4823	30	failed	14362	1	0.0	
+neos-4531126-vouga	/nfsd/rop/instances/miplib2017/neos-4531126-vouga.mps.gz	2.3459	47	failed	169996	0	1804.5354549334	
+neos-4532248-waihi	/nfsd/rop/instances/miplib2017/neos-4532248-waihi.mps.gz	1.2842	26	failed	86841	1	0.0	
+neos-4533806-waima	/nfsd/rop/instances/miplib2017/neos-4533806-waima.mps.gz	1.2415	25	failed	93304	14	3063.3188405797014	
+neos-4555749-wards	/nfsd/rop/instances/miplib2017/neos-4555749-wards.mps.gz	1.0560	21	failed	89130	17	3026.8121212121273	
+neos-4562542-watut	/nfsd/rop/instances/miplib2017/neos-4562542-watut.mps.gz	2.7943	56	failed	134694	11	3743.3043478260834	
+neos-4754521-awarau	/nfsd/rop/instances/miplib2017/neos-4754521-awarau.mps.gz	3.2903	66	found	41680	0	0.0	0.0
+neos-4954274-beardy	/nfsd/rop/instances/miplib2017/neos-4954274-beardy.mps.gz	0.6778	20	failed	12865	0	18659.208281816045	
+neos-498623	/nfsd/rop/instances/miplib2017/neos-498623.mps.gz	0.1145	20	found	8500	1361	16.000000000000117	146.50000000000003
+neos-503737	/nfsd/rop/instances/miplib2017/neos-503737.mps.gz	0.0511	20	found	2500	350	50.0	285.0
+neos-5107597-kakapo	/nfsd/rop/instances/miplib2017/neos-5107597-kakapo.mps.gz	0.0449	20	found	2976	138	0.0	62676.0
+neos-5115478-kaveri	/nfsd/rop/instances/miplib2017/neos-5115478-kaveri.mps.gz	0.0450	20	found	2976	138	0.0	83646.0
+neos-5140963-mincio	/nfsd/rop/instances/miplib2017/neos-5140963-mincio.mps.gz	0.0012	20	found	183	13	8877.0	19517.0
+neos-5178119-nalagi	/nfsd/rop/instances/miplib2017/neos-5178119-nalagi.mps.gz	0.0854	20	failed	4068	99	8.569858952216466	
+neos-5189128-totara	/nfsd/rop/instances/miplib2017/neos-5189128-totara.mps.gz	4.2137	84	failed	35640	385	330131.3907425874	
+neos-5221106-oparau	/nfsd/rop/instances/miplib2017/neos-5221106-oparau.mps.gz	0.3564	20	failed	25120	325	0.0	
+neos-525149	/nfsd/rop/instances/miplib2017/neos-525149.mps.gz	0.3559	20	found	3600	40	60.00000000000003	7055.0
+neos-5260764-orauea	/nfsd/rop/instances/miplib2017/neos-5260764-orauea.mps.gz	0.0662	20	failed	12580	360	58748.02253163571	
+neos-5261882-treska	/nfsd/rop/instances/miplib2017/neos-5261882-treska.mps.gz	0.0171	20	failed	2730	170	22721.328	
+neos-5266653-tugela	/nfsd/rop/instances/miplib2017/neos-5266653-tugela.mps.gz	0.1741	20	failed	22662	648	20969.90667381	
+neos-578379	/nfsd/rop/instances/miplib2017/neos-578379.mps.gz	2.0581	41	failed	17010	0	0.0	
+neos-631710	/nfsd/rop/instances/miplib2017/neos-631710.mps.gz	2.1233	42	failed	167056	0	188.2499999999988	
+neos-633273	/nfsd/rop/instances/miplib2017/neos-633273.mps.gz	0.1208	20	found	11154	0	4678552871.152561	16116499027.520784
+neos-738098	/nfsd/rop/instances/miplib2017/neos-738098.mps.gz	0.1863	20	failed	8946	147	-1099.0	
+neos-780889	/nfsd/rop/instances/miplib2017/neos-780889.mps.gz	0.7181	20	found	182700	0	3421500.0	3421500.0
+neos-820879	/nfsd/rop/instances/miplib2017/neos-820879.mps.gz	0.0889	20	found	9522	0	24874.267857142873	38668.0
+neos-826650	/nfsd/rop/instances/miplib2017/neos-826650.mps.gz	0.0331	20	failed	5792	120	28.000000000000004	
+neos-829552	/nfsd/rop/instances/miplib2017/neos-829552.mps.gz	4.6195	92	found	40971	0	2.098070714715532	26.71169733
+neos-831188	/nfsd/rop/instances/miplib2017/neos-831188.mps.gz	0.0588	20	found	4612	0	1.7677204140000011	3.55065386
+neos-860300	/nfsd/rop/instances/miplib2017/neos-860300.mps.gz	0.0992	20	found	1384	1	1666.0685857415326	7039.0
+neos-885524	/nfsd/rop/instances/miplib2017/neos-885524.mps.gz	0.1366	20	failed	91670	0	11754.884999999984	
+neos-911970	/nfsd/rop/instances/miplib2017/neos-911970.mps.gz	0.0041	20	found	840	48	23.259999999999998	292.60999999999996
+neos-913984	/nfsd/rop/instances/miplib2017/neos-913984.mps.gz	0.1345	20	failed	76000	0	1000.0	
+neos-914441	/nfsd/rop/instances/miplib2017/neos-914441.mps.gz	0.2848	20	found	15006	1	5660364.283770358	19671134.0
+neos-932721	/nfsd/rop/instances/miplib2017/neos-932721.mps.gz	0.0773	20	found	21825	441	2377.0	176739.0
+neos-933562	/nfsd/rop/instances/miplib2017/neos-933562.mps.gz	0.0503	20	found	3024	8	0.0	24.0
+neos-933638	/nfsd/rop/instances/miplib2017/neos-933638.mps.gz	0.1829	20	found	28637	3780	275.9999999999999	147189.0
+neos-933966	/nfsd/rop/instances/miplib2017/neos-933966.mps.gz	0.1237	20	found	27982	3780	318.0000000000001	180224.0
+neos-941313	/nfsd/rop/instances/miplib2017/neos-941313.mps.gz	0.4572	20	found	167910	0	9361.000000000005	10420.0
+neos-948346	/nfsd/rop/instances/miplib2017/neos-948346.mps.gz	0.3662	20	found	57855	0	-229.94999999999996	-168.4
+neos-953928	/nfsd/rop/instances/miplib2017/neos-953928.mps.gz	0.1421	20	found	23305	0	-99.92000000009665	-9.988888889
+neos-954925	/nfsd/rop/instances/miplib2017/neos-954925.mps.gz	0.7512	20	found	84718	0	-237.82370370356836	-113.7866666666
+neos-956971	/nfsd/rop/instances/miplib2017/neos-956971.mps.gz	0.3643	20	found	57756	0	-237.80444444437174	-169.7399999999
+neos-957143	/nfsd/rop/instances/miplib2017/neos-957143.mps.gz	0.4912	20	found	57756	0	-237.77000000012998	-187.7666666668
+neos-957323	/nfsd/rop/instances/miplib2017/neos-957323.mps.gz	0.3142	20	found	57756	0	-237.75791205515543	-215.791185186
+neos-960392	/nfsd/rop/instances/miplib2017/neos-960392.mps.gz	0.3020	20	found	59376	0	-238.00000000000006	-193.0
+neos18	/nfsd/rop/instances/miplib2017/neos18.mps.gz	0.0625	20	found	3312	0	7.0	19.0
+neos6	/nfsd/rop/instances/miplib2017/neos6.mps.gz	0.1257	20	found	8340	446	83.0	147.0
+nexp-150-20-8-5	/nfsd/rop/instances/miplib2017/nexp-150-20-8-5.mps.gz	0.0675	20	found	17880	2235	18.22680412371133	616.0
+nexp-50-20-4-2	/nfsd/rop/instances/miplib2017/nexp-50-20-4-2.mps.gz	0.0047	20	found	980	245	49.090909090909086	112.0
+ns1208400	/nfsd/rop/instances/miplib2017/ns1208400.mps.gz	0.0637	20	failed	2880	3	0.0	
+ns1828997	/nfsd/rop/instances/miplib2017/ns1828997.mps.gz	0.1313	20	failed	27275	0	0.0	
+ns1830653	/nfsd/rop/instances/miplib2017/ns1830653.mps.gz	0.1527	20	failed	1458	171	6153.000000000002	
+ns1849932	/nfsd/rop/instances/miplib2017/ns1849932.mps.gz	1.9739	39	failed	128164	357	546.0	
+ns1856153	/nfsd/rop/instances/miplib2017/ns1856153.mps.gz	0.1780	20	failed	11956	42	0.0	
+ns2071214	/nfsd/rop/instances/miplib2017/ns2071214.mps.gz	0.0698	20	failed	2220	500	0.0	
+nsrand-ipx	/nfsd/rop/instances/miplib2017/nsrand-ipx.mps.gz	0.0535	20	found	6620	1	48879.99999999999	326240.0
+nw04	/nfsd/rop/instances/miplib2017/nw04.mps.gz	0.2681	20	found	87482	0	16310.666666666666	19812.0
+opm2-z6-s1	/nfsd/rop/instances/miplib2017/opm2-z6-s1.mps.gz	0.4746	20	found	1350	0	-7540.517471910991	-1167.0
+opm2-z7-s8	/nfsd/rop/instances/miplib2017/opm2-z7-s8.mps.gz	1.6774	34	found	2023	0	-13372.055521655633	-1845.0
+opm2-z8-s0	/nfsd/rop/instances/miplib2017/opm2-z8-s0.mps.gz	4.5282	91	found	3200	0	-19394.50312468785	-2249.0
+opt1217	/nfsd/rop/instances/miplib2017/opt1217.mps.gz	0.0037	20	found	768	1	-20.021390374331553	-12.0
+p0201	/nfsd/rop/instances/miplib2017/p0201.mps.gz	0.0018	20	found	201	0	6875.0	12950.0
+pb-fit2d	/nfsd/rop/instances/miplib2017/pb-fit2d.mps.gz	4.6844	94	failed	118500	0	-22372.476239210875	
+pb-gfrd-pnc	/nfsd/rop/instances/miplib2017/pb-gfrd-pnc.mps.gz	0.1460	20	failed	27888	0	8316.011267885418	
+pb-grow22	/nfsd/rop/instances/miplib2017/pb-grow22.mps.gz	0.3359	20	failed	25124	0	-449681.2004864385	
+peg-solitaire-a3	/nfsd/rop/instances/miplib2017/peg-solitaire-a3.mps.gz	1.4458	29	failed	4552	0	0.9999999999999944	
+physiciansched6-1	/nfsd/rop/instances/miplib2017/physiciansched6-1.mps.gz	1.2155	24	failed	104778	21426	7500.0	
+physiciansched6-2	/nfsd/rop/instances/miplib2017/physiciansched6-2.mps.gz	0.5436	20	failed	109346	2481	43012.5	
+pigeon-10	/nfsd/rop/instances/miplib2017/pigeon-10.mps.gz	0.0093	20	found	400	90	-10000.0	-9000.0
+pigeon-13	/nfsd/rop/instances/miplib2017/pigeon-13.mps.gz	0.0089	20	found	637	117	-13000.0	-12000.0
+pigeon-16	/nfsd/rop/instances/miplib2017/pigeon-16.mps.gz	0.0125	20	found	928	144	-16000.0	-15000.0
+pigeon-20	/nfsd/rop/instances/miplib2017/pigeon-20.mps.gz	0.0191	20	failed	1400	180	-20000.0	
+polygonpack3-15	/nfsd/rop/instances/miplib2017/polygonpack3-15.mps.gz	1.2967	26	found	44207	30	-114052462.32075061	-8666009.88547259
+polygonpack4-10	/nfsd/rop/instances/miplib2017/polygonpack4-10.mps.gz	0.5742	20	found	20517	20	-93676953.47010002	-17151558.595305927
+polygonpack4-15	/nfsd/rop/instances/miplib2017/polygonpack4-15.mps.gz	1.2811	26	found	44207	30	-114052801.79086004	-13253730.468593488
+polygonpack4-7	/nfsd/rop/instances/miplib2017/polygonpack4-7.mps.gz	0.2738	20	found	10774	14	-75324958.8742	-7827406.4712484395
+polygonpack5-15	/nfsd/rop/instances/miplib2017/polygonpack5-15.mps.gz	1.4781	30	found	48133	30	-66030132.70000622	-5728822.241801443
+probportfolio	/nfsd/rop/instances/miplib2017/probportfolio.mps.gz	0.0027	20	found	300	20	5.0	21.77732358258245
+queens-30	/nfsd/rop/instances/miplib2017/queens-30.mps.gz	0.5239	20	found	900	0	-70.91268901960353	0.0
+rail507	/nfsd/rop/instances/miplib2017/rail507.mps.gz	0.8114	20	found	63009	10	172.14556667654887	188.0
+ramos3	/nfsd/rop/instances/miplib2017/ramos3.mps.gz	4.4315	89	found	2187	0	145.79999999999978	215.0
+reblock115	/nfsd/rop/instances/miplib2017/reblock115.mps.gz	0.1100	20	found	1150	0	-39365983.337347075	-16564961.817489946
+reblock166	/nfsd/rop/instances/miplib2017/reblock166.mps.gz	0.4934	20	found	1660	0	-886882876.9658287	-308767463.895584
+reblock354	/nfsd/rop/instances/miplib2017/reblock354.mps.gz	2.8148	56	found	3540	0	-39641692.45229166	-29377201.4309154
+reblock420	/nfsd/rop/instances/miplib2017/reblock420.mps.gz	2.3581	47	found	4200	0	-886535897.5221374	-400885292.90160805
+rlp1	/nfsd/rop/instances/miplib2017/rlp1.mps.gz	0.0021	20	found	450	11	13.244444444444449	20.0
+rocII-10-11	/nfsd/rop/instances/miplib2017/rocII-10-11.mps.gz	1.0581	21	failed	22616	352	-11.97486483837696	
+rocII-5-11	/nfsd/rop/instances/miplib2017/rocII-5-11.mps.gz	0.3699	20	failed	11341	182	-11.949729676753922	
+rocII-8-11	/nfsd/rop/instances/miplib2017/rocII-8-11.mps.gz	0.7936	20	failed	18106	284	-11.968581047971202	
+roi2alpha3n4	/nfsd/rop/instances/miplib2017/roi2alpha3n4.mps.gz	0.6140	20	failed	6642	174	-83.88099327640492	
+roi5alpha10n8	/nfsd/rop/instances/miplib2017/roi5alpha10n8.mps.gz	2.4091	48	failed	105950	200	-91.91636036871482	
+rvb-sub	/nfsd/rop/instances/miplib2017/rvb-sub.mps.gz	0.5209	20	failed	33763	2	11.206514277509235	
+s1234	/nfsd/rop/instances/miplib2017/s1234.mps.gz	3.3512	67	failed	2945	0	0.3619246607604751	
+s55	/nfsd/rop/instances/miplib2017/s55.mps.gz	2.2717	45	found	78137	4	-22.151773159006794	-22.151773159006815
+satellites2-25	/nfsd/rop/instances/miplib2017/satellites2-25.mps.gz	0.4168	20	failed	34324	1054	-30.000000000000004	
+satellites2-40	/nfsd/rop/instances/miplib2017/satellites2-40.mps.gz	0.3610	20	found	34324	1054	-30.000000000000004	43.0
+satellites2-60-fs	/nfsd/rop/instances/miplib2017/satellites2-60-fs.mps.gz	0.2424	20	found	34324	1054	-30.0	45.0
+satellites4-25	/nfsd/rop/instances/miplib2017/satellites4-25.mps.gz	3.2720	65	failed	93747	1890	-41.000000000000014	
+scpj4scip	/nfsd/rop/instances/miplib2017/scpj4scip.mps.gz	1.4674	29	failed	99947	0	104.08379570031124	
+scpk4	/nfsd/rop/instances/miplib2017/scpk4.mps.gz	3.1838	64	failed	100000	0	280.5442001972564	
+seymour	/nfsd/rop/instances/miplib2017/seymour.mps.gz	0.4898	20	found	1372	0	403.8464741251928	448.0
+sorrell3	/nfsd/rop/instances/miplib2017/sorrell3.mps.gz	0.7476	20	found	1024	0	-512.0	0.0
+sorrell4	/nfsd/rop/instances/miplib2017/sorrell4.mps.gz	3.3384	67	found	2048	0	-1024.0	0.0
+sorrell7	/nfsd/rop/instances/miplib2017/sorrell7.mps.gz	1.0901	22	found	2048	0	-1024.0	0.0
+sorrell8	/nfsd/rop/instances/miplib2017/sorrell8.mps.gz	0.0781	20	found	2046	0	-1023.0	0.0
+sp97ar	/nfsd/rop/instances/miplib2017/sp97ar.mps.gz	0.3086	20	found	14101	0	652560391.2475646	1302000071.04
+sp97ic	/nfsd/rop/instances/miplib2017/sp97ic.mps.gz	0.2156	20	found	12497	0	422097069.2635893	882864454.7200001
+sp98ar	/nfsd/rop/instances/miplib2017/sp98ar.mps.gz	0.3421	20	found	15085	0	524401296.55720735	1038205219.04
+sp98ic	/nfsd/rop/instances/miplib2017/sp98ic.mps.gz	0.1887	20	found	10894	0	444277568.9341514	1071397444.1600001
+supportcase14	/nfsd/rop/instances/miplib2017/supportcase14.mps.gz	0.0023	20	found	304	0	271.99999999999983	293.0
+supportcase16	/nfsd/rop/instances/miplib2017/supportcase16.mps.gz	0.0027	20	found	319	0	272.00000000000017	309.0
+supportcase18	/nfsd/rop/instances/miplib2017/supportcase18.mps.gz	0.0381	20	failed	13410	0	47.18666666666666	
+supportcase22	/nfsd/rop/instances/miplib2017/supportcase22.mps.gz	2.7384	55	failed	7129	0	0.0	
+supportcase26	/nfsd/rop/instances/miplib2017/supportcase26.mps.gz	0.0027	20	found	396	40	1288.1021611356975	2201.879396023007
+supportcase3	/nfsd/rop/instances/miplib2017/supportcase3.mps.gz	1.3260	27	failed	4191	0	0.0	
+supportcase4	/nfsd/rop/instances/miplib2017/supportcase4.mps.gz	0.4288	20	failed	3162	0	0.0	
+swath	/nfsd/rop/instances/miplib2017/swath.mps.gz	0.0219	20	found	6724	81	334.49685810000005	15177.890650000003
+t1717	/nfsd/rop/instances/miplib2017/t1717.mps.gz	1.6952	34	failed	73885	0	134531.02142841756	
+t1722	/nfsd/rop/instances/miplib2017/t1722.mps.gz	0.3476	20	found	36630	0	98815.40761087413	422768.0
+tanglegram4	/nfsd/rop/instances/miplib2017/tanglegram4.mps.gz	0.3452	20	failed	56048	0	0.0	
+tanglegram6	/nfsd/rop/instances/miplib2017/tanglegram6.mps.gz	0.0538	20	failed	9182	0	0.0	
+tbfp-bigm	/nfsd/rop/instances/miplib2017/tbfp-bigm.mps.gz	0.1696	20	found	2404	2	-178.1539880549008	170.378472217
+toll-like	/nfsd/rop/instances/miplib2017/toll-like.mps.gz	0.0334	20	failed	2883	0	0.0	
+trento1	/nfsd/rop/instances/miplib2017/trento1.mps.gz	3.1899	64	found	6415	1272	5182758.848055603	577847148.0245999
+v150d30-2hopcds	/nfsd/rop/instances/miplib2017/v150d30-2hopcds.mps.gz	0.1338	20	found	150	0	27.617490375272826	52.0
+var-smallemery-m6j6	/nfsd/rop/instances/miplib2017/var-smallemery-m6j6.mps.gz	0.9612	20	found	5606	2	-156.0562681225369	-97.4375
+vpphard2	/nfsd/rop/instances/miplib2017/vpphard2.mps.gz	0.6795	20	failed	199999	0	0.0	
+vpphard	/nfsd/rop/instances/miplib2017/vpphard.mps.gz	0.2686	20	found	51471	0	0.0	14582.0
+wnq-n100-mw99-14	/nfsd/rop/instances/miplib2017/wnq-n100-mw99-14.mps.gz	3.7184	74	found	10000	0	185.26315789473685	3128.0
+z26	/nfsd/rop/instances/miplib2017/z26.mps.gz	3.3998	68	found	17937	0	-1651.937499999999	-56.0

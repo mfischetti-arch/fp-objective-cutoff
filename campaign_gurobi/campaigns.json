@@ -1,195 +1,506 @@
 {
-  "_doc": "Manifest macchina delle campagne di fp_gurobi. Una voce per lancio sbatch. I log grezzi sono la fonte di verita'; questo file dice dove sono e con che codice/parametri sono stati prodotti. Aggiornare a ogni lancio e a ogni chiusura (stato, esito).",
-  "solver": "Gurobi 13.0.3 via gurobipy (venv ~/fpg/venv, python 3.12, numpy, scipy)",
-  "cluster": {"host": "dei (login.dei.unipd.it), utente fisch", "dir": "~/fpg", "partition": "razor (arrow occupata da un collega dal 03/09/2026)", "blade": "4 core esclusivi, 14 GB; 3 run a 1 thread in parallelo (eval), lotti di 4 (tune), 4 piloti (recon)"},
-  "campaigns": [
-    {
-      "id": "recon-v1",
-      "phase": "recon",
-      "job": 4936555,
-      "date": "2026-09-03",
-      "code_commit": "8b92566 + fix restart FGL su tutte le binarie (committato subito dopo, vedi git log)",
-      "list": "inst_target23.txt v1 (430 righe, tutte le candidate con z_best)",
-      "params": {"TLPILOT": 150, "TLP_MAX": 5, "pilot_seed": 9999, "pilot_completion": true},
-      "logs": "~/fpg/logs/t23_4936555_*.log (108 file; copia locale nello scratchpad della sessione)",
-      "outputs": "~/fpg/out/tgt23pilot/<inst>__pilot_s9999_tl150_tlp5.json (cache dei piloti, riusata da tune/eval)",
-      "status": "COMPLETED",
-      "result": "148 eleggibili (41 benchmark) su 430: unsupported 106, nopilot 93, slow 42, at_best 22 (+ le 20 righe tune v1 giudicate dal job 4936556, cancellato dopo i piloti)",
-      "derived": "eligible23.txt (md5 1f4239eefe2e) -> inst_target23.txt v2 (md5 bfd76d61a1be: 20 tune, 128 eval di cui 41 benchmark)"
-    },
-    {
-      "id": "tune-a0.5",
-      "phase": "tune",
-      "job": 4936761,
-      "date": "2026-09-03 21:25",
-      "code_commit": "vedi git log del commit 'fp_gurobi: cartella nuova...' (03/09/2026)",
-      "list": "inst_target23.txt v2, righe set=tune (20, fuori benchmark, seme 4242 fra le eleggibili)",
-      "params": {"A": 0.5, "RUNTAG": 50, "seeds": [10, 11, 12, 13, 14], "WGRID": [0.02, 0.05, 0.10, 0.15, 0.20], "arms": "naive + test x WGRID + completion x WGRID (11 run/seme)", "TL": "clamp(20 t_LP, 20, 300) s"},
-      "logs": "~/fpg/logs/t23_4936761_*.log",
-      "outputs": "~/fpg/out/tgt2350/<inst>__<mode>_w<w>_s<seed>.json",
-      "status": "COMPLETED (20 task, 1100 RES, 0 errori; ~40 min su 16 lame razor)",
-      "result": "coppie (istanza,seme) riuscite su 100: naive (w=0) 67 | test w=0.02/0.05/0.10/0.15/0.20 -> 61/56/59/58/55 | completion -> 67/62/64/69/67. Regola dichiarata: test sceglie w=0 (= naive: la fascia col test diretto NON aiuta), completion sceglie w=0.15 (69 vs 67, differenza nel rumore; tempo censurato mediano 10.4 s vs 7.0 s del naive)",
-      "decision_eval": "WC=0.15 (regola). WT=0.02 = miglior w>0, dichiarato ESPLORATIVO: con WT=0 il braccio test sarebbe una copia del naive (stesso poliedro, stessa uscita) e il task con due soli processi scenderebbe al 50% di CPU, sotto la soglia del DEI",
-      "notes": "primo lancio 4936735 fallito all'istante (venv senza scipy: ModuleNotFoundError), output messi in out/_bad/, scipy installato, rilanciato"
-    },
-    {
-      "id": "eval-a0.5",
-      "phase": "eval",
-      "job": 4936809,
-      "date": "2026-09-03 22:20",
-      "code_commit": "c31091c (codice identico a da4b7ed)",
-      "list": "inst_target23.txt v2 (md5 bfd76d61a1be), righe set=eval: 128, di cui 41 benchmark (test primario) e 87 fuori (secondario)",
-      "params": {"A": 0.5, "RUNTAG": 50, "seeds": [0, 1, 2, 3, 4], "WT": 0.02, "WC": 0.15, "arms": "naive, test(WT), completion(WC) in parallelo per seme", "TL": "clamp(20 t_LP, 20, 300) s", "partition": "razor, 16 lame, %32"},
-      "logs": "~/fpg/logs/t23_4936809_*.log",
-      "outputs": "~/fpg/out/tgt2350/<inst>__<mode>_w<w>_s<seed>.json",
-      "status": "COMPLETED (128 task, 1920 RES, 0 errori; ~45 min su 16 lame razor)",
-      "result": "insieme alle 6 extra (134 istanze): coppie riuscite su 670 -> naive 438, test(0.02) 424, completion(0.15) 430; istanze con >=3/5 -> 87 / 84 / 85. Primario (43 bench): 143/130/142 coppie, 28/26/28 istanze. Nessun confronto appaiato significativo dopo Holm (naive vs completion nel secondario 38-19, p grezzo 0.016, Holm 0.098, a favore del NAIVE). Miste del primario: completion 15 istanze vs 12 del naive (76 vs 63 coppie), nel rumore. 1 run declassato (glass4 naive s1: target_ok=1 ma validated=0)",
-      "aggregate": "python agg_target23.py eval <dir con i log di 4936809 e 4936961> --csv eval50.csv"
-    },
-    {
-      "id": "eval-a0.5-extra",
-      "phase": "eval",
-      "job": 4936961,
-      "date": "2026-09-03 23:05",
-      "why": "la lista v2 era stata costruita su una copia PARZIALE dei log di ricognizione (ultimi 7 task ancora in corso): 6 eleggibili mancavano. La ricognizione completa da' 154 eleggibili (43 benchmark), eligible23_full.txt",
-      "list": "inst_target23_extra.txt (6 righe eval: supportcase26, swath, t1722, tbfp-bigm, var-smallemery-m6j6, vpphard; 2 nel benchmark)",
-      "params": "identici a eval-a0.5 (A=0.5, RUNTAG=50, WT=0.02, WC=0.15, semi 0-4), INST=inst_target23_extra.txt",
-      "logs": "~/fpg/logs/t23_4936961_*.log (da aggregare INSIEME a quelli di 4936809)",
-      "outputs": "~/fpg/out/tgt2350/ (stessa cartella)",
-      "status": "RUNNING"
-    },
-    {
-      "id": "tune-a0.9",
-      "phase": "tune",
-      "job": 4936989,
-      "date": "2026-09-03 23:40",
-      "code_commit": "09834d9",
-      "list": "inst_target23.txt v2, righe set=tune (le stesse 20)",
-      "params": {"A": 0.9, "RUNTAG": 90, "seeds": [10, 11, 12, 13, 14], "WGRID": [0.02, 0.05, 0.10, 0.15, 0.20, 0.30, 0.50], "arms": "naive + test x 7 + completion x 7 = 15 run/seme, 75 per task", "TL": "clamp(20 t_LP, 20, 300) s"},
-      "logs": "~/fpg/logs/t23_4936989_*.log",
-      "outputs": "~/fpg/out/tgt2390/",
-      "status": "COMPLETED (20 task, 1500 RES, 0 errori)",
-      "result": "coppie riuscite su 100: naive 76 | test w=0.02/0.05/0.10/0.15/0.20/0.30/0.50 -> 78/79/77/72/70/72/53 | completion -> 79/86/79/79/83/82/68. Regola: WT=0.05 (79, +3 sul naive), WC=0.05 (86, +10; 17 istanze >=3/5 contro 15). A soglia vicina al pilota la fascia col completamento aiuta; oltre w=0.3 crolla anche qui",
-      "why": "a=0.5 e' una soglia profonda: la fascia lavora in uno spazio stretto e nei fallimenti la pompa spesso non trova alcun punto. A 0.9 la soglia e' vicina al pilota"
-    },
-    {
-      "id": "tune-a0.5-w30-50",
-      "phase": "tune",
-      "job": 4936990,
-      "date": "2026-09-03 23:40",
-      "code_commit": "09834d9",
-      "list": "inst_target23.txt v2, righe set=tune",
-      "params": {"A": 0.5, "RUNTAG": "50x", "seeds": [10, 11, 12, 13, 14], "WGRID": [0.30, 0.50], "note": "il naive viene rifatto (100 run, duplicati delle righe di tune-a0.5: l'aggregatore li segnala e conta le coppie una volta sola)"},
-      "logs": "~/fpg/logs/t23_4936990_*.log (da aggregare INSIEME a quelli di 4936761 per la griglia completa 0..0.5)",
-      "outputs": "~/fpg/out/tgt2350x/",
-      "status": "COMPLETED (20 task, 500 RES, 0 errori)",
-      "result": "coppie riuscite su 100: test w=0.30 -> 49, w=0.50 -> 40; completion w=0.30 -> 61, w=0.50 -> 49. La curva del completion ha il massimo a w=0.15 (69) e cala oltre; il naive (67) resta il riferimento. I 100 run naive ripetuti danno esiti identici ai primi (134 = 2 x 67)",
-      "why": "MF: vedere se la curva del completion continua a salire oltre w=0.15 (69/100) o crolla, visto che la profondita' osservata dei punti sopra U e' 0.2-0.35 del gap"
-    },
-    {
-      "id": "eval-a0.9",
-      "phase": "eval",
-      "job": [4937072, 4937073],
-      "date": "2026-09-04 01:05",
-      "code_commit": "f3c476e",
-      "list": "inst_target23.txt v2 (128 eval) + inst_target23_extra.txt (6), stesse di eval-a0.5",
-      "params": {"A": 0.9, "RUNTAG": 90, "seeds": [0, 1, 2, 3, 4], "WT": 0.05, "WC": 0.05, "arms": "naive, test(0.05), completion(0.05) in parallelo per seme", "TL": "clamp(20 t_LP, 20, 300) s", "partition": "razor"},
-      "logs": "~/fpg/logs/t23_4937072_*.log + t23_4937073_*.log (aggregare insieme)",
-      "outputs": "~/fpg/out/tgt2390/",
-      "status": "COMPLETED (134 task, 2010 RES, 0 errori, invarianti ok, nessun declassato)",
-      "result": "coppie riuscite su 670 -> naive 519, test(0.05) 518, completion(0.05) 561; istanze >=3/5 -> 104 / 103 / 112. Miste (64): completion 247/320 e 49 istanze contro 206 e 42 del naive; pure (70): identici (313/315/314). Primario (43 bench): 162/163/179 coppie, 32/32/35 istanze. Test del segno esito-poi-tempo: nulla dopo Holm fra naive e gli altri; test vs completion nel secondario 45-13 a favore del TEST perche' sulle pure il completamento paga un LP in piu' per giro (stesso esito, piu' lento)",
-      "aggregate": "python agg_target23.py eval <dir con 4937072 e 4937073> --csv eval90.csv"
-    },
-    {
-      "id": "ideas-pressure",
-      "phase": "esplorazione (righe di pressione, IDEE_PRESSIONE.md)",
-      "job": {"a0.9": 4937360, "a0.5": 4937361, "smoke": 4937354},
-      "date": "2026-09-04 00:10",
-      "code_commit": "6f843b8",
-      "list": "inst_ideas.txt (39 istanze FUORI benchmark, dure ma non impossibili: naive 0-4/5 a una soglia o completion > naive, + 6 di taratura che discriminano)",
-      "params": {"seeds": [0, 1, 2], "arms": "naive; completion:cut:0.05; completion:reflect:0.02; completion:reflect:0.02+lb:0.1; completion:lb:0.1; completion:sgn:0.05; completion:card:0.05; completion:nogood:50; completion:reflect:0.02+nogood:50", "NPAR": 4, "TL": "clamp(20 t_LP, 20, 300)", "pilot": "rifatto con seme 9999 per scrivere il .inc (JSON identico)"},
-      "logs": "~/fpg/logs/t24_4937360_*.log (a=0.9), t24_4937361_*.log (a=0.5, parte dopo)",
-      "outputs": "~/fpg/out/tgt24ideas/, out/tgt24ideas50/",
-      "status": "RUNNING",
-      "aggregate": "python agg_ideas.py logs/t24_4937360_*.log --a 0.9",
-      "smoke": "2club a=0.9 seme 0: naive 8.8 s, cut 16.4, reflect 16.4, reflect+lb 7.1, lb 3.5 s in 3 giri; sgn/card/nogood falliscono in 20 s"
-    },
-    {
-      "id": "ideas-pressure-round2",
-      "phase": "esplorazione, secondo giro (attorno a reflect+lb)",
-      "job": 4937449,
-      "date": "2026-09-04 00:45",
-      "code_commit": "vedi git log (lbmove, lb:grow)",
-      "list": "inst_ideas.txt (39)",
-      "params": {"A": 0.9, "RUNTAG": "ideas2", "seeds": [0, 1, 2], "arms": "naive; completion:cut:0.05; completion:cut:0.05+lb:0.1; completion:reflect:0.05+lb:0.1; completion:reflect:0.02+lb:0.05; completion:reflect:0.02+lb:0.2; completion:reflect:0.02+lbmove:0.1; completion:reflect:0.02+lbmove:0.1:grow; completion:reflect:0.02+lb:0.1:grow"},
-      "logs": "~/fpg/logs/t24_4937449_*.log",
-      "outputs": "~/fpg/out/tgt24ideas2/",
-      "status": "COMPLETED (39 task, 0 errori)",
-      "result": "istanze/coppie: naive 20/57, cut:0.05 22/66, cut+lb:0.1 24/71, reflect+lb:0.05 24/69, reflect+lb:0.1:grow 26/78 (vs naive 6/0/33 p=0.031; vs cut 4/0/35 p=0.125), reflect+lb:0.2 23/69, reflect+lbmove 23/70, reflect+lbmove:grow 23/70, reflect:0.05+lb 24/71. Candidato: reflect:0.02+lb:0.1:grow"
-    },
-    {
-      "id": "ideas-pressure-round3",
-      "phase": "esplorazione, terzo giro: track (la riga insegue il costo dell'arrotondato)",
-      "job": 4937497,
-      "date": "2026-09-04 01:20",
-      "list": "inst_ideas.txt (39)",
-      "params": {"A": 0.9, "RUNTAG": "ideas3", "seeds": [0, 1, 2], "arms": "naive; completion:cut:0.05; completion:reflect:0.02+lb:0.1; completion:track:0.5; completion:track:0.25; completion:track:0.5:0.2; completion:track:0.5+lb:0.1; completion:track:0.5+lbmove:0.1; completion:track:1.0"},
-      "logs": "~/fpg/logs/t24_4937497_*.log",
-      "outputs": "~/fpg/out/tgt24ideas3/",
-      "status": "COMPLETED (39 task, 0 errori)",
-      "result": "track da solo peggio di cut (18-21 istanze vs 22); track+lb 25/71, track+lbmove 24/69: e' il local branching che aggiunge, non il controllore. Candidato confermato: reflect:0.02+lb:0.1:grow"
-    },
-    {
-      "id": "ideas-pressure-round3-a0.5",
-      "phase": "esplorazione, terzo giro a soglia profonda (riferimento corretto cut:0.15)",
-      "job": 4937546,
-      "date": "2026-09-04 01:35",
-      "list": "inst_ideas.txt (39)",
-      "params": {"A": 0.5, "RUNTAG": "ideas3x50", "seeds": [0, 1, 2], "arms": "naive; completion:cut:0.15; completion:reflect:0.02+lb:0.1; completion:track:0.5; completion:track:0.25; completion:track:0.5:0.2; completion:track:0.5+lb:0.1; completion:track:0.5+lbmove:0.1; completion:reflect:0.02+lbmove:0.1"},
-      "logs": "~/fpg/logs/t24_4937546_*.log",
-      "outputs": "~/fpg/out/tgt24ideas3x50/",
-      "status": "COMPLETED (39 task, 0 errori)",
-      "result": "naive 8/25, cut:0.15 12/34, reflect+lb 17/49 (vs naive 11/2/26 p=0.022; vs cut 6/1/32), reflect+lbmove 17/51, track:0.25 9/28, track:0.5 13/37, track:0.5:0.2 15/41, track:0.5+lb 19/54 (vs naive 12/1/26 p=0.003; vs cut 7/0/32 p=0.016), track:0.5+lbmove 19/51",
-      "round1_a0.5": "job 4937361 COMPLETED: naive 8 ist/25 coppie, cut:0.05 10/32, reflect 12/37, reflect+lb 16/48 (vs naive 10/2/27 p=0.039; vs cut 9/3/27 p=0.15), reflect+nogood 15/37; lb/card/sgn/nogood da soli 0-1 istanze"
-    },
-    {
-      "id": "confirm-B-tracklb",
-      "phase": "CONFERMA 2: track+lb con e senza grow, stessi riferimenti (dichiarata in IDEE_PRESSIONE.md prima del lancio)",
-      "job": {"a0.9": 4937737, "a0.5": 4937738},
-      "date": "2026-09-04 02:40 (in coda dopo la conferma 1)",
-      "list": "inst_confirm.txt (134)",
-      "params": {"seeds": [0, 1, 2, 3, 4], "arms_a0.9": "naive; completion:cut:0.05; completion:track:0.5+lb:0.1:grow; completion:track:0.5+lb:0.1", "arms_a0.5": "naive; completion:cut:0.15; completion:track:0.5+lb:0.1:grow; completion:track:0.5+lb:0.1"},
-      "logs": "~/fpg/logs/t24_4937737_*.log, t24_4937738_*.log",
-      "outputs": "~/fpg/out/tgt24confirmB90/, tgt24confirmB50/",
-      "status": "COMPLETED entrambe (134 task, 2680 RES, 0 errori ciascuna)",
-      "result_a0.5": "naive 87/435, cut:0.15 85/428, track+lb 92/466, track+lb:grow 93/464. Candidato vs naive 11/5/118 p=0.21, vs cut 10/2/122 p=0.039 grezzo (non regge Holm su 8); piu' lento dove entrambi riescono (27/45). Non passa la regola",
-      "verdict": "NESSUN candidato passa: la palla attorno all'incumbent sopra la riga sull'obiettivo guadagna 2-3 istanze a 0.9 e 6-8 a 0.5 su 134, segno coerente, non significativo, piu' lento",
-      "result_a0.9": "naive 102/505, cut:0.05 107/537, track+lb 110/544, track+lb:grow 110/542. Candidato vs naive 9/1/124 p=0.021 (non regge Holm su 8), vs cut 3/0/131 p=0.25; piu' lento di cut dove entrambi riescono (31/51). Non passa la regola; grow ininfluente"
-    },
-    {
-      "id": "confirm-lbgrow",
-      "phase": "CONFERMA del candidato sulle 134 istanze di valutazione (protocollo dichiarato in IDEE_PRESSIONE.md prima del lancio)",
-      "job": {"a0.9": 4937630, "a0.5": 4937631},
-      "date": "2026-09-04 02:05",
-      "code_commit": "b06e199 (fp_target.py con reflect/lb:grow/track)",
-      "list": "inst_confirm.txt = 128 eval di inst_target23.txt + 6 extra (43 benchmark, 91 secondario)",
-      "params": {"seeds": [0, 1, 2, 3, 4], "arms_a0.9": "naive; completion:cut:0.05; completion:reflect:0.02+lb:0.1:grow; completion:cut:0.05+lb:0.1:grow", "arms_a0.5": "naive; completion:cut:0.15; completion:reflect:0.02+lb:0.1:grow; completion:cut:0.15+lb:0.1:grow", "NPAR": 4, "TL": "clamp(20 t_LP, 20, 300)", "pilot": "cache; le 95 istanze senza .inc rifanno il pilota una volta (JSON identico)"},
-      "logs": "~/fpg/logs/t24_4937630_*.log, t24_4937631_*.log",
-      "outputs": "~/fpg/out/tgt24confirm90/, tgt24confirm50/",
-      "status": "COMPLETED entrambe (134 task, 2680 RES, 0 errori ciascuna)",
-      "result_a0.5": "istanze/coppie: naive 88/439, cut:0.15 85/428, cut+lb:grow 89/444, reflect+lb:grow 92/465. Candidato vs naive 8/4/122 p=0.39, vs cut 11/4/119 p=0.12: il migliore dei quattro ma NON passa la regola (nulla dopo Holm). Miste: vs cut 3/0/61",
-      "result_a0.9": "istanze/coppie: naive 101/504, cut:0.05 108/539, cut+lb:grow 107/542, reflect+lb:grow 107/536. Candidato vs cut 1/2/131 (pareggio), vs naive 9/3/122 p=0.15; cut vs naive 8/1/125 p=0.039. NON PASSA a 0.9: il segnale del nucleo duro non si ritrova sulle 134",
-      "aggregate": "python agg_ideas.py <dir> --a 0.9 (e 0.5); Holm a mano sugli 8 test dichiarati",
-      "declared_rule": "funziona se il candidato vince contro naive E contro cut in almeno una famiglia dopo Holm senza perdere altrove; altrimenti no, e si scrive lo stesso"
-    },
-    {
-      "id": "archive-fpc",
-      "phase": "manutenzione",
-      "job": 4936734,
-      "date": "2026-09-03",
-      "what": "tar czf ~/archive/fpc_scip_out_sets_2026-09-03.tgz fpc/out fpc/sets_*  (progetto SCIP: 3.8 GB di log per run + 0.4 GB di file .set/.cmd); gli originali NON sono cancellati: decide MF",
-      "status": "COMPLETED",
-      "result": "tgz da 436 MB (4.2 GB compressi 10:1, 166 894 voci verificate con tar tzf); originali CANCELLATI il 03/09/2026 su ordine di MF; il tgz resta SOLO sul login del DEI (MF: per ora non copiarlo sul notebook); ~/fpc ora ~0.8 GB (venv, sols, logs, codice)"
-    }
-  ]
+ "_doc": "Manifest macchina delle campagne di fp_gurobi. Una voce per lancio sbatch. I log grezzi sono la fonte di verita'; questo file dice dove sono e con che codice/parametri sono stati prodotti. Aggiornare a ogni lancio e a ogni chiusura (stato, esito).",
+ "solver": "Gurobi 13.0.3 via gurobipy (venv ~/fpg/venv, python 3.12, numpy, scipy)",
+ "cluster": {
+  "host": "dei (login.dei.unipd.it), utente fisch",
+  "dir": "~/fpg",
+  "partition": "razor (arrow occupata da un collega dal 03/09/2026)",
+  "blade": "4 core esclusivi, 14 GB; 3 run a 1 thread in parallelo (eval), lotti di 4 (tune), 4 piloti (recon)"
+ },
+ "campaigns": [
+  {
+   "id": "recon-v1",
+   "phase": "recon",
+   "job": 4936555,
+   "date": "2026-09-03",
+   "code_commit": "8b92566 + fix restart FGL su tutte le binarie (committato subito dopo, vedi git log)",
+   "list": "inst_target23.txt v1 (430 righe, tutte le candidate con z_best)",
+   "params": {
+    "TLPILOT": 150,
+    "TLP_MAX": 5,
+    "pilot_seed": 9999,
+    "pilot_completion": true
+   },
+   "logs": "~/fpg/logs/t23_4936555_*.log (108 file; copia locale nello scratchpad della sessione)",
+   "outputs": "~/fpg/out/tgt23pilot/<inst>__pilot_s9999_tl150_tlp5.json (cache dei piloti, riusata da tune/eval)",
+   "status": "COMPLETED",
+   "result": "148 eleggibili (41 benchmark) su 430: unsupported 106, nopilot 93, slow 42, at_best 22 (+ le 20 righe tune v1 giudicate dal job 4936556, cancellato dopo i piloti)",
+   "derived": "eligible23.txt (md5 1f4239eefe2e) -> inst_target23.txt v2 (md5 bfd76d61a1be: 20 tune, 128 eval di cui 41 benchmark)"
+  },
+  {
+   "id": "tune-a0.5",
+   "phase": "tune",
+   "job": 4936761,
+   "date": "2026-09-03 21:25",
+   "code_commit": "vedi git log del commit 'fp_gurobi: cartella nuova...' (03/09/2026)",
+   "list": "inst_target23.txt v2, righe set=tune (20, fuori benchmark, seme 4242 fra le eleggibili)",
+   "params": {
+    "A": 0.5,
+    "RUNTAG": 50,
+    "seeds": [
+     10,
+     11,
+     12,
+     13,
+     14
+    ],
+    "WGRID": [
+     0.02,
+     0.05,
+     0.1,
+     0.15,
+     0.2
+    ],
+    "arms": "naive + test x WGRID + completion x WGRID (11 run/seme)",
+    "TL": "clamp(20 t_LP, 20, 300) s"
+   },
+   "logs": "~/fpg/logs/t23_4936761_*.log",
+   "outputs": "~/fpg/out/tgt2350/<inst>__<mode>_w<w>_s<seed>.json",
+   "status": "COMPLETED (20 task, 1100 RES, 0 errori; ~40 min su 16 lame razor)",
+   "result": "coppie (istanza,seme) riuscite su 100: naive (w=0) 67 | test w=0.02/0.05/0.10/0.15/0.20 -> 61/56/59/58/55 | completion -> 67/62/64/69/67. Regola dichiarata: test sceglie w=0 (= naive: la fascia col test diretto NON aiuta), completion sceglie w=0.15 (69 vs 67, differenza nel rumore; tempo censurato mediano 10.4 s vs 7.0 s del naive)",
+   "decision_eval": "WC=0.15 (regola). WT=0.02 = miglior w>0, dichiarato ESPLORATIVO: con WT=0 il braccio test sarebbe una copia del naive (stesso poliedro, stessa uscita) e il task con due soli processi scenderebbe al 50% di CPU, sotto la soglia del DEI",
+   "notes": "primo lancio 4936735 fallito all'istante (venv senza scipy: ModuleNotFoundError), output messi in out/_bad/, scipy installato, rilanciato"
+  },
+  {
+   "id": "eval-a0.5",
+   "phase": "eval",
+   "job": 4936809,
+   "date": "2026-09-03 22:20",
+   "code_commit": "c31091c (codice identico a da4b7ed)",
+   "list": "inst_target23.txt v2 (md5 bfd76d61a1be), righe set=eval: 128, di cui 41 benchmark (test primario) e 87 fuori (secondario)",
+   "params": {
+    "A": 0.5,
+    "RUNTAG": 50,
+    "seeds": [
+     0,
+     1,
+     2,
+     3,
+     4
+    ],
+    "WT": 0.02,
+    "WC": 0.15,
+    "arms": "naive, test(WT), completion(WC) in parallelo per seme",
+    "TL": "clamp(20 t_LP, 20, 300) s",
+    "partition": "razor, 16 lame, %32"
+   },
+   "logs": "~/fpg/logs/t23_4936809_*.log",
+   "outputs": "~/fpg/out/tgt2350/<inst>__<mode>_w<w>_s<seed>.json",
+   "status": "COMPLETED (128 task, 1920 RES, 0 errori; ~45 min su 16 lame razor)",
+   "result": "insieme alle 6 extra (134 istanze): coppie riuscite su 670 -> naive 438, test(0.02) 424, completion(0.15) 430; istanze con >=3/5 -> 87 / 84 / 85. Primario (43 bench): 143/130/142 coppie, 28/26/28 istanze. Nessun confronto appaiato significativo dopo Holm (naive vs completion nel secondario 38-19, p grezzo 0.016, Holm 0.098, a favore del NAIVE). Miste del primario: completion 15 istanze vs 12 del naive (76 vs 63 coppie), nel rumore. 1 run declassato (glass4 naive s1: target_ok=1 ma validated=0)",
+   "aggregate": "python agg_target23.py eval <dir con i log di 4936809 e 4936961> --csv eval50.csv"
+  },
+  {
+   "id": "eval-a0.5-extra",
+   "phase": "eval",
+   "job": 4936961,
+   "date": "2026-09-03 23:05",
+   "why": "la lista v2 era stata costruita su una copia PARZIALE dei log di ricognizione (ultimi 7 task ancora in corso): 6 eleggibili mancavano. La ricognizione completa da' 154 eleggibili (43 benchmark), eligible23_full.txt",
+   "list": "inst_target23_extra.txt (6 righe eval: supportcase26, swath, t1722, tbfp-bigm, var-smallemery-m6j6, vpphard; 2 nel benchmark)",
+   "params": "identici a eval-a0.5 (A=0.5, RUNTAG=50, WT=0.02, WC=0.15, semi 0-4), INST=inst_target23_extra.txt",
+   "logs": "~/fpg/logs/t23_4936961_*.log (da aggregare INSIEME a quelli di 4936809)",
+   "outputs": "~/fpg/out/tgt2350/ (stessa cartella)",
+   "status": "RUNNING"
+  },
+  {
+   "id": "tune-a0.9",
+   "phase": "tune",
+   "job": 4936989,
+   "date": "2026-09-03 23:40",
+   "code_commit": "09834d9",
+   "list": "inst_target23.txt v2, righe set=tune (le stesse 20)",
+   "params": {
+    "A": 0.9,
+    "RUNTAG": 90,
+    "seeds": [
+     10,
+     11,
+     12,
+     13,
+     14
+    ],
+    "WGRID": [
+     0.02,
+     0.05,
+     0.1,
+     0.15,
+     0.2,
+     0.3,
+     0.5
+    ],
+    "arms": "naive + test x 7 + completion x 7 = 15 run/seme, 75 per task",
+    "TL": "clamp(20 t_LP, 20, 300) s"
+   },
+   "logs": "~/fpg/logs/t23_4936989_*.log",
+   "outputs": "~/fpg/out/tgt2390/",
+   "status": "COMPLETED (20 task, 1500 RES, 0 errori)",
+   "result": "coppie riuscite su 100: naive 76 | test w=0.02/0.05/0.10/0.15/0.20/0.30/0.50 -> 78/79/77/72/70/72/53 | completion -> 79/86/79/79/83/82/68. Regola: WT=0.05 (79, +3 sul naive), WC=0.05 (86, +10; 17 istanze >=3/5 contro 15). A soglia vicina al pilota la fascia col completamento aiuta; oltre w=0.3 crolla anche qui",
+   "why": "a=0.5 e' una soglia profonda: la fascia lavora in uno spazio stretto e nei fallimenti la pompa spesso non trova alcun punto. A 0.9 la soglia e' vicina al pilota"
+  },
+  {
+   "id": "tune-a0.5-w30-50",
+   "phase": "tune",
+   "job": 4936990,
+   "date": "2026-09-03 23:40",
+   "code_commit": "09834d9",
+   "list": "inst_target23.txt v2, righe set=tune",
+   "params": {
+    "A": 0.5,
+    "RUNTAG": "50x",
+    "seeds": [
+     10,
+     11,
+     12,
+     13,
+     14
+    ],
+    "WGRID": [
+     0.3,
+     0.5
+    ],
+    "note": "il naive viene rifatto (100 run, duplicati delle righe di tune-a0.5: l'aggregatore li segnala e conta le coppie una volta sola)"
+   },
+   "logs": "~/fpg/logs/t23_4936990_*.log (da aggregare INSIEME a quelli di 4936761 per la griglia completa 0..0.5)",
+   "outputs": "~/fpg/out/tgt2350x/",
+   "status": "COMPLETED (20 task, 500 RES, 0 errori)",
+   "result": "coppie riuscite su 100: test w=0.30 -> 49, w=0.50 -> 40; completion w=0.30 -> 61, w=0.50 -> 49. La curva del completion ha il massimo a w=0.15 (69) e cala oltre; il naive (67) resta il riferimento. I 100 run naive ripetuti danno esiti identici ai primi (134 = 2 x 67)",
+   "why": "MF: vedere se la curva del completion continua a salire oltre w=0.15 (69/100) o crolla, visto che la profondita' osservata dei punti sopra U e' 0.2-0.35 del gap"
+  },
+  {
+   "id": "eval-a0.9",
+   "phase": "eval",
+   "job": [
+    4937072,
+    4937073
+   ],
+   "date": "2026-09-04 01:05",
+   "code_commit": "f3c476e",
+   "list": "inst_target23.txt v2 (128 eval) + inst_target23_extra.txt (6), stesse di eval-a0.5",
+   "params": {
+    "A": 0.9,
+    "RUNTAG": 90,
+    "seeds": [
+     0,
+     1,
+     2,
+     3,
+     4
+    ],
+    "WT": 0.05,
+    "WC": 0.05,
+    "arms": "naive, test(0.05), completion(0.05) in parallelo per seme",
+    "TL": "clamp(20 t_LP, 20, 300) s",
+    "partition": "razor"
+   },
+   "logs": "~/fpg/logs/t23_4937072_*.log + t23_4937073_*.log (aggregare insieme)",
+   "outputs": "~/fpg/out/tgt2390/",
+   "status": "COMPLETED (134 task, 2010 RES, 0 errori, invarianti ok, nessun declassato)",
+   "result": "coppie riuscite su 670 -> naive 519, test(0.05) 518, completion(0.05) 561; istanze >=3/5 -> 104 / 103 / 112. Miste (64): completion 247/320 e 49 istanze contro 206 e 42 del naive; pure (70): identici (313/315/314). Primario (43 bench): 162/163/179 coppie, 32/32/35 istanze. Test del segno esito-poi-tempo: nulla dopo Holm fra naive e gli altri; test vs completion nel secondario 45-13 a favore del TEST perche' sulle pure il completamento paga un LP in piu' per giro (stesso esito, piu' lento)",
+   "aggregate": "python agg_target23.py eval <dir con 4937072 e 4937073> --csv eval90.csv"
+  },
+  {
+   "id": "ideas-pressure",
+   "phase": "esplorazione (righe di pressione, IDEE_PRESSIONE.md)",
+   "job": {
+    "a0.9": 4937360,
+    "a0.5": 4937361,
+    "smoke": 4937354
+   },
+   "date": "2026-09-04 00:10",
+   "code_commit": "6f843b8",
+   "list": "inst_ideas.txt (39 istanze FUORI benchmark, dure ma non impossibili: naive 0-4/5 a una soglia o completion > naive, + 6 di taratura che discriminano)",
+   "params": {
+    "seeds": [
+     0,
+     1,
+     2
+    ],
+    "arms": "naive; completion:cut:0.05; completion:reflect:0.02; completion:reflect:0.02+lb:0.1; completion:lb:0.1; completion:sgn:0.05; completion:card:0.05; completion:nogood:50; completion:reflect:0.02+nogood:50",
+    "NPAR": 4,
+    "TL": "clamp(20 t_LP, 20, 300)",
+    "pilot": "rifatto con seme 9999 per scrivere il .inc (JSON identico)"
+   },
+   "logs": "~/fpg/logs/t24_4937360_*.log (a=0.9), t24_4937361_*.log (a=0.5, parte dopo)",
+   "outputs": "~/fpg/out/tgt24ideas/, out/tgt24ideas50/",
+   "status": "RUNNING",
+   "aggregate": "python agg_ideas.py logs/t24_4937360_*.log --a 0.9",
+   "smoke": "2club a=0.9 seme 0: naive 8.8 s, cut 16.4, reflect 16.4, reflect+lb 7.1, lb 3.5 s in 3 giri; sgn/card/nogood falliscono in 20 s"
+  },
+  {
+   "id": "ideas-pressure-round2",
+   "phase": "esplorazione, secondo giro (attorno a reflect+lb)",
+   "job": 4937449,
+   "date": "2026-09-04 00:45",
+   "code_commit": "vedi git log (lbmove, lb:grow)",
+   "list": "inst_ideas.txt (39)",
+   "params": {
+    "A": 0.9,
+    "RUNTAG": "ideas2",
+    "seeds": [
+     0,
+     1,
+     2
+    ],
+    "arms": "naive; completion:cut:0.05; completion:cut:0.05+lb:0.1; completion:reflect:0.05+lb:0.1; completion:reflect:0.02+lb:0.05; completion:reflect:0.02+lb:0.2; completion:reflect:0.02+lbmove:0.1; completion:reflect:0.02+lbmove:0.1:grow; completion:reflect:0.02+lb:0.1:grow"
+   },
+   "logs": "~/fpg/logs/t24_4937449_*.log",
+   "outputs": "~/fpg/out/tgt24ideas2/",
+   "status": "COMPLETED (39 task, 0 errori)",
+   "result": "istanze/coppie: naive 20/57, cut:0.05 22/66, cut+lb:0.1 24/71, reflect+lb:0.05 24/69, reflect+lb:0.1:grow 26/78 (vs naive 6/0/33 p=0.031; vs cut 4/0/35 p=0.125), reflect+lb:0.2 23/69, reflect+lbmove 23/70, reflect+lbmove:grow 23/70, reflect:0.05+lb 24/71. Candidato: reflect:0.02+lb:0.1:grow"
+  },
+  {
+   "id": "ideas-pressure-round3",
+   "phase": "esplorazione, terzo giro: track (la riga insegue il costo dell'arrotondato)",
+   "job": 4937497,
+   "date": "2026-09-04 01:20",
+   "list": "inst_ideas.txt (39)",
+   "params": {
+    "A": 0.9,
+    "RUNTAG": "ideas3",
+    "seeds": [
+     0,
+     1,
+     2
+    ],
+    "arms": "naive; completion:cut:0.05; completion:reflect:0.02+lb:0.1; completion:track:0.5; completion:track:0.25; completion:track:0.5:0.2; completion:track:0.5+lb:0.1; completion:track:0.5+lbmove:0.1; completion:track:1.0"
+   },
+   "logs": "~/fpg/logs/t24_4937497_*.log",
+   "outputs": "~/fpg/out/tgt24ideas3/",
+   "status": "COMPLETED (39 task, 0 errori)",
+   "result": "track da solo peggio di cut (18-21 istanze vs 22); track+lb 25/71, track+lbmove 24/69: e' il local branching che aggiunge, non il controllore. Candidato confermato: reflect:0.02+lb:0.1:grow"
+  },
+  {
+   "id": "ideas-pressure-round3-a0.5",
+   "phase": "esplorazione, terzo giro a soglia profonda (riferimento corretto cut:0.15)",
+   "job": 4937546,
+   "date": "2026-09-04 01:35",
+   "list": "inst_ideas.txt (39)",
+   "params": {
+    "A": 0.5,
+    "RUNTAG": "ideas3x50",
+    "seeds": [
+     0,
+     1,
+     2
+    ],
+    "arms": "naive; completion:cut:0.15; completion:reflect:0.02+lb:0.1; completion:track:0.5; completion:track:0.25; completion:track:0.5:0.2; completion:track:0.5+lb:0.1; completion:track:0.5+lbmove:0.1; completion:reflect:0.02+lbmove:0.1"
+   },
+   "logs": "~/fpg/logs/t24_4937546_*.log",
+   "outputs": "~/fpg/out/tgt24ideas3x50/",
+   "status": "COMPLETED (39 task, 0 errori)",
+   "result": "naive 8/25, cut:0.15 12/34, reflect+lb 17/49 (vs naive 11/2/26 p=0.022; vs cut 6/1/32), reflect+lbmove 17/51, track:0.25 9/28, track:0.5 13/37, track:0.5:0.2 15/41, track:0.5+lb 19/54 (vs naive 12/1/26 p=0.003; vs cut 7/0/32 p=0.016), track:0.5+lbmove 19/51",
+   "round1_a0.5": "job 4937361 COMPLETED: naive 8 ist/25 coppie, cut:0.05 10/32, reflect 12/37, reflect+lb 16/48 (vs naive 10/2/27 p=0.039; vs cut 9/3/27 p=0.15), reflect+nogood 15/37; lb/card/sgn/nogood da soli 0-1 istanze"
+  },
+  {
+   "id": "confirm-B-tracklb",
+   "phase": "CONFERMA 2: track+lb con e senza grow, stessi riferimenti (dichiarata in IDEE_PRESSIONE.md prima del lancio)",
+   "job": {
+    "a0.9": 4937737,
+    "a0.5": 4937738
+   },
+   "date": "2026-09-04 02:40 (in coda dopo la conferma 1)",
+   "list": "inst_confirm.txt (134)",
+   "params": {
+    "seeds": [
+     0,
+     1,
+     2,
+     3,
+     4
+    ],
+    "arms_a0.9": "naive; completion:cut:0.05; completion:track:0.5+lb:0.1:grow; completion:track:0.5+lb:0.1",
+    "arms_a0.5": "naive; completion:cut:0.15; completion:track:0.5+lb:0.1:grow; completion:track:0.5+lb:0.1"
+   },
+   "logs": "~/fpg/logs/t24_4937737_*.log, t24_4937738_*.log",
+   "outputs": "~/fpg/out/tgt24confirmB90/, tgt24confirmB50/",
+   "status": "COMPLETED entrambe (134 task, 2680 RES, 0 errori ciascuna)",
+   "result_a0.5": "naive 87/435, cut:0.15 85/428, track+lb 92/466, track+lb:grow 93/464. Candidato vs naive 11/5/118 p=0.21, vs cut 10/2/122 p=0.039 grezzo (non regge Holm su 8); piu' lento dove entrambi riescono (27/45). Non passa la regola",
+   "verdict": "NESSUN candidato passa: la palla attorno all'incumbent sopra la riga sull'obiettivo guadagna 2-3 istanze a 0.9 e 6-8 a 0.5 su 134, segno coerente, non significativo, piu' lento",
+   "result_a0.9": "naive 102/505, cut:0.05 107/537, track+lb 110/544, track+lb:grow 110/542. Candidato vs naive 9/1/124 p=0.021 (non regge Holm su 8), vs cut 3/0/131 p=0.25; piu' lento di cut dove entrambi riescono (31/51). Non passa la regola; grow ininfluente"
+  },
+  {
+   "id": "confirm-lbgrow",
+   "phase": "CONFERMA del candidato sulle 134 istanze di valutazione (protocollo dichiarato in IDEE_PRESSIONE.md prima del lancio)",
+   "job": {
+    "a0.9": 4937630,
+    "a0.5": 4937631
+   },
+   "date": "2026-09-04 02:05",
+   "code_commit": "b06e199 (fp_target.py con reflect/lb:grow/track)",
+   "list": "inst_confirm.txt = 128 eval di inst_target23.txt + 6 extra (43 benchmark, 91 secondario)",
+   "params": {
+    "seeds": [
+     0,
+     1,
+     2,
+     3,
+     4
+    ],
+    "arms_a0.9": "naive; completion:cut:0.05; completion:reflect:0.02+lb:0.1:grow; completion:cut:0.05+lb:0.1:grow",
+    "arms_a0.5": "naive; completion:cut:0.15; completion:reflect:0.02+lb:0.1:grow; completion:cut:0.15+lb:0.1:grow",
+    "NPAR": 4,
+    "TL": "clamp(20 t_LP, 20, 300)",
+    "pilot": "cache; le 95 istanze senza .inc rifanno il pilota una volta (JSON identico)"
+   },
+   "logs": "~/fpg/logs/t24_4937630_*.log, t24_4937631_*.log",
+   "outputs": "~/fpg/out/tgt24confirm90/, tgt24confirm50/",
+   "status": "COMPLETED entrambe (134 task, 2680 RES, 0 errori ciascuna)",
+   "result_a0.5": "istanze/coppie: naive 88/439, cut:0.15 85/428, cut+lb:grow 89/444, reflect+lb:grow 92/465. Candidato vs naive 8/4/122 p=0.39, vs cut 11/4/119 p=0.12: il migliore dei quattro ma NON passa la regola (nulla dopo Holm). Miste: vs cut 3/0/61",
+   "result_a0.9": "istanze/coppie: naive 101/504, cut:0.05 108/539, cut+lb:grow 107/542, reflect+lb:grow 107/536. Candidato vs cut 1/2/131 (pareggio), vs naive 9/3/122 p=0.15; cut vs naive 8/1/125 p=0.039. NON PASSA a 0.9: il segnale del nucleo duro non si ritrova sulle 134",
+   "aggregate": "python agg_ideas.py <dir> --a 0.9 (e 0.5); Holm a mano sugli 8 test dichiarati",
+   "declared_rule": "funziona se il candidato vince contro naive E contro cut in almeno una famiglia dopo Holm senza perdere altrove; altrimenti no, e si scrive lo stesso"
+  },
+  {
+   "id": "archive-fpc",
+   "phase": "manutenzione",
+   "job": 4936734,
+   "date": "2026-09-03",
+   "what": "tar czf ~/archive/fpc_scip_out_sets_2026-09-03.tgz fpc/out fpc/sets_*  (progetto SCIP: 3.8 GB di log per run + 0.4 GB di file .set/.cmd); gli originali NON sono cancellati: decide MF",
+   "status": "COMPLETED",
+   "result": "tgz da 436 MB (4.2 GB compressi 10:1, 166 894 voci verificate con tar tzf); originali CANCELLATI il 03/09/2026 su ordine di MF; il tgz resta SOLO sul login del DEI (MF: per ora non copiarlo sul notebook); ~/fpc ora ~0.8 GB (venv, sols, logs, codice)"
+  },
+  {
+   "id": "react-smoke",
+   "phase": "smoke",
+   "date": "2026-09-06",
+   "job": 4947686,
+   "status": "COMPLETED",
+   "what": "job26_react.sh su inst_smoke.txt (10teams, csched007, pigeon-20), RUNTAG=smoke, TL 20 s, 18 run per istanza",
+   "result": "RES corrette, validated=1 sui successi; pigeon-20 risolta in 6 giri da oh/ok, fgl 0/5"
+  },
+  {
+   "id": "react-ident",
+   "phase": "identita'",
+   "date": "2026-09-06",
+   "job": 4947687,
+   "status": "COMPLETED",
+   "what": "fp_react.py --pump fgl --seed 9999 --time-limit 150 su 10teams/pigeon-20/csched007 (logs/r26_ident_4947687.log)",
+   "result": "10teams identico al pilota di E3: 159 giri, 158 LP, 37 flip, 5 restart, best 994"
+  },
+  {
+   "id": "react-main-r1",
+   "phase": "campagna",
+   "date": "2026-09-06",
+   "job": 4947694,
+   "status": "COMPLETED (272/272, 4896 run, 0 rc!=0 salvo csched010 fgl s0; 52 istanze da rifare in r1fix)",
+   "what": "sbatch --array=0-271%11 job26_react.sh (razor, solo razor per decisione MF); inst_react.txt = 272 istanze 0-1 miste t_LP<=5 s (176 pilot found, 96 failed); TL clamp(20 t_LP,20,300); 18 run/istanza: fgl x5, hyb x5, dh dk uh uk oh ok oh13 ok13",
+   "params": {
+    "tau0": 0.05,
+    "gamma": [
+     2.0,
+     1.3
+    ],
+    "decay": 0.9,
+    "refine": 2.0,
+    "tau_min": 0.0001,
+    "seeds": [
+     0,
+     1,
+     2,
+     3,
+     4
+    ],
+    "primary": "oh vs fgl"
+   },
+   "out": "~/fpg/out/react_r1/",
+   "logs": "~/fpg/logs/r26_4947694_*.log",
+   "aggregator": "agg_react.py",
+   "result": "pre-fix: fgl 157/272 (mediana 5 semi), oh 142 (133 found + 9 failed), uh 134, uk 137, ok 136, oh13 131, ok13 124, hyb 121, dk 76, dh 71; oh vs fgl 13 vinte / 28 perse (p 0.03); tempi 2-2.8x piu' lenti; qualita' prima soluzione peggiore per i bracci con salita, migliore per la sola discesa"
+  },
+  {
+   "id": "react-slow",
+   "phase": "campagna",
+   "date": "2026-09-06",
+   "job": 4947695,
+   "status": "RUNNING",
+   "what": "sbatch --array=0-42%3 --export=ALL,INST=inst_react_slow.txt,RUNTAG=slow job26_react.sh: 43 istanze 5<t_LP<=150 s, TL 300; alzare il throttle a fine main",
+   "out": "~/fpg/out/react_slow/",
+   "logs": "~/fpg/logs/r26_4947695_*.log"
+  },
+  {
+   "id": "react-every",
+   "phase": "campagna",
+   "date": "2026-09-06",
+   "job": 4947960,
+   "status": "COMPLETED ma SOLO eoh: le virgole in --export=ALL,ARMS=eoh,eoh05,... sono separatori di variabili per SLURM, ARMS e' rimasto 'eoh'",
+   "what": "sbatch --dependency=afterany:4947694 --array=0-271%11 --export=ALL,ARMS=eoh,eoh05,edh,oh,oheq,fl,SEEDS=\"0 1 2\",RUNTAG=every job26_react.sh: variante --every (eoh 0.01 osc, eoh05 0.05 osc, edh 0.01 down), oh rifatto col codice nuovo, oheq (riga tirata come uguaglianza), fl = flipleash (flip debole FGL sullo stallo, guinzaglio osc sui cicli, restart casuale solo come ultima risorsa) x 3 semi; 8 run per istanza sulle 272",
+   "out": "~/fpg/out/react_every/",
+   "logs": "~/fpg/logs/r26_4947960_*.log",
+   "result": "eoh 149/272 (fgl 157): 16 vinte / 24 perse vs fgl, p 0.27; il migliore dei puri"
+  },
+  {
+   "id": "react-fix",
+   "phase": "campagna",
+   "date": "2026-09-06",
+   "job": 4947995,
+   "status": "COMPLETED (52/52): aggregato consolidato in REACT_r1.md, 0 invarianti violate",
+   "what": "sbatch --array=0-51%2 --export=ALL,INST=inst_react_fix.txt,RUNTAG=r1fix job26_react.sh: le 52 istanze della main con errori, rc!=0, success non validato o LP di z_HI oltre il tetto (mk_react_fix.py); tutti i 18 bracci col codice nuovo; alzare il throttle a fine every",
+   "out": "~/fpg/out/react_r1fix/",
+   "logs": "~/fpg/logs/r26_4947995_*.log"
+  },
+  {
+   "id": "react-every2",
+   "phase": "campagna",
+   "date": "2026-09-06",
+   "job": 4948282,
+   "status": "COMPLETED (272/272)",
+   "what": "ARMS=\"eoh05 edh oh oheq fl\" SEEDS=\"0 1 2\" RUNTAG=every2 sbatch --array=0-271%9 --export=ALL job26_react.sh (variabili dall'AMBIENTE, non da --export=...,ARMS=): eoh05, edh, oh (codice nuovo), oheq, fl x3 semi",
+   "out": "~/fpg/out/react_every2/",
+   "logs": "~/fpg/logs/r26_4948282_*.log",
+   "result": "fl 151 (7/13 vs fgl, p 0.26), eoh05 141 (16/32), oh nuovo codice 140 (12/29), oheq 139 (12/30), edh 67"
+  },
+  {
+   "id": "react-pf",
+   "phase": "campagna",
+   "date": "2026-09-06",
+   "job": 4948311,
+   "status": "COMPLETED (272/272)",
+   "what": "ARMS=\"pf pf3\" SEEDS=\"0 1 2 3 4\" RUNTAG=pf sbatch --array=0-271%9 --export=ALL job26_react.sh: portfolio dichiarato pf = eoh con cancello su z_HI per 0.7 TL poi FGL col residuo (cap scelto sul train = 203 fuori benchmark, simulato dai log: 124 vs 118; test 69 benchmark: 42 vs 39); pf3 = cap 0.3, esplorativo",
+   "out": "~/fpg/out/react_pf/",
+   "logs": "~/fpg/logs/r26_4948311_*.log"
+  },
+  {
+   "id": "react-alt",
+   "phase": "campagna",
+   "date": "2026-09-07",
+   "job": 4948743,
+   "status": "rilasciata il 07/09 ~06:00 dopo la campagna paper; esplorativa, non nel paper",
+   "what": "ARMS=\"alt20 alt100 alth50\" SEEDS=\"0 1 2\" RUNTAG=alt sbatch --array=0-271%9 --export=ALL job26_react.sh: regime ALTERNATO chiesto da MF (FGL per k giri, guinzaglio osc/hold/every 0.01 per k giri, stessa corsa e memoria; alth50 tiene le righe nei giri FGL); 9 run per istanza",
+   "out": "~/fpg/out/react_alt/",
+   "logs": "~/fpg/logs/r26_4948743_*.log"
+  },
+  {
+   "id": "react-ff",
+   "phase": "controllo",
+   "date": "2026-09-07",
+   "job": 4948823,
+   "status": "CANCELLATA dopo 20 task (07/09 ~03:30): superata dalla campagna paper 4948984, che ha il braccio ff sulla stessa lama degli altri; i 20 task fatti restano in logs/r26_4948823_*.log",
+   "what": "ARMS=\"ff ff3\" SEEDS=\"0 1 2 3 4\" RUNTAG=ff sbatch --array=0-271%9 --export=ALL job26_react.sh: CONTROLLO del portfolio (regola 3 dell'handoff di radice: verificare che il baseline non stia facendo il lavoro): fase 1 = FGL (seme s) per 0.7 TL (ff3: 0.3), fase 2 = FGL seme s+100 col residuo. Simulato dai log: 153-154 contro fgl 157, cioe' il riavvio da solo perde; se il run lo conferma, il +8 di pf e' del guinzaglio",
+   "out": "~/fpg/out/react_ff/",
+   "logs": "~/fpg/logs/r26_4948823_*.log"
+  },
+  {
+   "id": "react-paper",
+   "phase": "campagna per il paper",
+   "date": "2026-09-07",
+   "job": 4948984,
+   "status": "COMPLETED (272/272, 5984 run, 0 invarianti fatali); SUPERATA da react-paper2 (150 run in errore per il terzo LP)",
+   "what": "ARMS=\"fgl oh eoh fl pf ff\" SEEDS=\"0 1 2 3 4\" RUNTAG=paper sbatch --array=0-271%8 --export=ALL job26_react.sh, fp_react.py md5 e9fbf0fc (codice FINALE, unico per tutti i bracci): 22 run per istanza sulla stessa lama; e' la campagna da cui mk_tab_react.py genera tab_react.tex e val_react.tex per la sezione finale della v3. Le campagne precedenti (main, fix, every, every2, pf, ff, alt) hanno versioni di codice diverse fra i bracci: valgono come esplorazione",
+   "out": "~/fpg/out/react_paper/",
+   "logs": "~/fpg/logs/r26_4948984_*.log",
+   "table": "mk_tab_react.py",
+   "result": "fgl 157; oh 139 (11/29, p 0.006, Holm 0.032); eoh 145 (15/27); fl 149 (6/14); pf 163 (12/6, p 0.24); ff 153 (0/4); tempi ~2x, prima soluzione piu' cara tranne fl. E' la fonte di tab_react.tex/val_react.tex della Section 8 della v3"
+  },
+  {
+   "id": "react-paper2",
+   "phase": "campagna per il paper (ripetizione col codice corretto)",
+   "date": "2026-09-07",
+   "job": 4949586,
+   "status": "COMPLETED (272/272, 5984 run, 0 invarianti fatali, 0 run in errore)",
+   "what": "stessi bracci e semi di react-paper, fp_react.py md5 a28bf7a6 (senza il terzo LP: base del primo LP ripristinata; audit M5). E' la fonte di val_react.tex (la frase di registro nelle conclusioni della v3) e di tab_react.tex (supplemento)",
+   "result": "fgl 158; oh 147 (12/23, p 0.09); eoh 150 (15/23); fl 156 (5/7); pf 165 (14/7, p 0.19); ff 153 (0/5); tempi 1.4-1.7x; prima soluzione piu' cara tranne fl (39/39)",
+   "out": "~/fpg/out/react_paper2/",
+   "logs": "~/fpg/logs/r26_4949586_*.log"
+  }
+ ]
 }
