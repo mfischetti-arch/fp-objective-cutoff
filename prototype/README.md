@@ -26,24 +26,31 @@ The grid covers three families — OR-Library set covering, MIPLIB 2003, MIPLIB
 reads the family of an instance from `inst_list.txt` (field 0 keyed on the
 basename of field 2), so that file is required even though it is only metadata.
 
-## Regenerating Table 1 and Figure 1
+## Regenerating Table 1, Figure 2 and the numbers of Section 2
 
 ```bash
 python agg_band.py                        # Markdown, the default definition
-python agg_band.py --latex                # booktabs bodies, pasted into the manuscript
+python agg_band.py --latex                # Table 1, left columns (booktabs rows, pasted into the manuscript)
 python agg_band.py --band-lam 0.25        # the extra column at lambda_v2 = 0.75
 python agg_band.py --band-lam 0.75        # the extra column at lambda_v2 = 0.25
-python agg_band.py --hist --dump band_positions.csv   # the input of the figure
+python agg_band_seeds.py --latex --dump ../paper/band_positions_3seeds.csv
+                                          # Table 1, right columns: position in the band, median over
+                                          # three seeds (seed 0 from grid/, seeds 1-2 from grid_s12/);
+                                          # the csv is the input of Figure 2
+python chk_moat_time.py                   # Section 2: round of the first lost rounding vs. first point under U
+python chk_spikes.py --table              # Section 2: plain vs. perturbed roundings; fraction above U on the plain ones
 ```
 
-then, for the figure itself:
+then, for the figures:
 
 ```bash
-cd ../paper && python figs_v2.py          # reads band_positions.csv -> fig5_band.pdf
+cd ../paper && python figs_v2.py          # band_positions_3seeds.csv -> fig5_band.pdf (Figure 2)
+cd ../paper && python fig_pingpong.py     # grid/scpnrh3__cutoff_lam0.5_s0.csv -> fig7_pingpong.pdf (Figure 1)
 ```
 
-The copy of `band_positions.csv` shipped in `paper/` is byte-identical to the one
-this command produces.
+The copies of `band_positions_3seeds.csv` and of `band_positions.csv` (seed 0
+only, `agg_band.py --hist --dump band_positions.csv`; no longer used by the paper)
+shipped in `paper/` are byte-identical to the ones these commands produce.
 
 ⚠️ **λ convention.** The files in `grid/` were written in the **v1** convention
 (λ weighted z_LP); the paper uses **v2** (λ = 1 → U at the incumbent, λ = 0 → U

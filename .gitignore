@@ -25,9 +25,9 @@ sols/
 sets_*/
 *.tgz
 
-# generated figure (regenerate with: cd paper && python figs_v2.py)
+# generated figures (regenerate with: cd paper && python figs_v2.py && python fig_pingpong.py)
 paper/fig5_band.pdf
-paper/fig6_profile.pdf
+paper/fig7_pingpong.pdf
 
 # editors / OS
 .DS_Store

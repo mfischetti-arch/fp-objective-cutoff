@@ -44,7 +44,7 @@ Each directory has its own `README.md` with the details.
 |---|---|---|
 | SCIP | git snapshot **`dba4b2a`** (2026-08-24) | not redistributed; `scip/scip_build.sh` clones and checks it out |
 | SoPlex | git snapshot **`f0dbc81`** (2026-08-08) | idem |
-| Gurobi | **13.0.3** via `gurobipy` | experiment E3 only; a licence able to handle MIPLIB-sized models is required to *run* it, not to re-aggregate it |
+| Gurobi | **13.0.3** via `gurobipy` | the from-scratch pump of Section 2 (`prototype/`), experiment E3 and the sweep (`campaign_gurobi/`); a licence able to handle MIPLIB-sized models is required to *run* them, not to re-aggregate them |
 | Python | **3.12** on the cluster | the aggregators also run on 3.14; only the standard library, `numpy` and `scipy` are used |
 | numpy, scipy | any recent version | `agg_*.py`, `mk_*.py` |
 | matplotlib | any recent version | only for `paper/figs_v2.py` |
@@ -70,9 +70,12 @@ those of `paper/manuscript.pdf`.
 
 | paper object | command | produces |
 |---|---|---|
-| **Table 1** (fraction of feasible rounded points above the cutoff; position in the band) | `cd prototype && python agg_band.py --latex`<br>plus `--band-lam 0.25` and `--band-lam 0.75` for the two extra levels | printed to stdout; the body is pasted into the manuscript (the `.tex` carries a `%%` provenance line) |
-| **Figure 1** (where the lost improving points sit inside the band) | `cd paper && python figs_v2.py` | `paper/fig5_band.pdf`, from `paper/band_positions.csv` |
-| `band_positions.csv` itself | `cd prototype && python agg_band.py --hist --dump band_positions.csv` | `prototype/band_positions.csv`; the copy in `paper/` is the one used for the figure |
+| **Figure 1** (the two sequences of the pump on `scpnrh3`, the "ping-pong" in and out of the cutoff) | `cd paper && python fig_pingpong.py` (`[instance] [rounds]`, default `scpnrh3 150`) | `paper/fig7_pingpong.pdf`, from the per-round `.csv` of `prototype/grid/` |
+| **Table 1, left** (fraction of feasible rounded points above the cutoff, three seeds) | `cd prototype && python agg_band.py --latex` (λ = 0.5), `--band-lam 0.75` (λ = 0.25) and `--band-lam 0.25` (λ = 0.75; the option takes the v1 value, see `prototype/README.md`) | printed to stdout; the body is pasted into the manuscript (the `.tex` carries a `%%` provenance line) |
+| **Table 1, right** (position in the band, median over three seeds) | `cd prototype && python agg_band_seeds.py --latex --dump ../paper/band_positions_3seeds.csv` | the rows on stdout, pasted into the manuscript; `paper/band_positions_3seeds.csv` |
+| **Figure 2** (where the lost improving points sit inside the band) | `cd paper && python figs_v2.py` | `paper/fig5_band.pdf`, from `paper/band_positions_3seeds.csv` |
+| **numbers of the two paragraphs of Section 2 after Figure 1** (round of the first lost rounding vs. round of the first point under U; plain vs. perturbed roundings) | `cd prototype && python chk_moat_time.py` and `python chk_spikes.py --table` | printed to stdout; quoted by hand in the text |
+| **pure 0-1 vs. mixed numbers of Section 6** (56/120, FGL vs. direct test on the two groups, general integers, split by size) | `cd campaign_scip && python chk_mixed.py` | printed to stdout; quoted by hand in the text |
 | **Table 2** (E1, the twelve pre-declared paired comparisons, Holm) | `cd campaign_scip && python mk_tabs_fact.py` | `paper/tab_fact_paired.tex` |
 | **Table 3** (E3, target experiment, outcome) | `cd campaign_gurobi && python mk_tab_target.py` | `campaign_gurobi/tab_target_outcome.tex`, copied to `paper/` |
 | **Table 4** (E1 per arm) | `cd campaign_scip && python mk_tabs_fact.py` | `paper/tab_fact_e1.tex` |
@@ -81,7 +84,7 @@ those of `paper/manuscript.pdf`.
 | **Table 7** (E3, paired comparisons on the outcome) | `cd campaign_gurobi && python mk_tab_target.py` | `campaign_gurobi/tab_target_paired.tex`, copied to `paper/` |
 | **numbers quoted in the running text** of Sections 6-8 (medians, counts, cost of the completion, pure vs mixed, split by size) | `cd campaign_scip && python agg_fact.py results_fact.txt --valid validated.txt` | a Markdown report on stdout; the manuscript carries a `%%` comment next to each quoted number saying which line of this report it comes from |
 | **independent validation** of every `.sol` (Section 5) | `cd campaign_scip && python agg_fact.py results_fact.txt --valid validated.txt` | the section "Validazione indipendente" of the same report, read from `validated.txt` |
-| **declared exclusions** (37 + 2 instances, Section 6) | same command | the section "Esclusioni dichiarate" of the same report |
+| **declared exclusions** (37 + 2 instances, Section 5) | same command | the section "Esclusioni dichiarate" of the same report; the list is also shipped as `campaign_scip/excluded_instances.txt` |
 | **the "For the record" sentence of the conclusions** (the cutoff as the pump's perturbation: 147 vs 158 solved on 272 instances, +14/−7 in the portfolio) | `cd campaign_gurobi && tar xzf results/logs_r26_4949586.tgz && python mk_tab_react.py "logs/r26_4949586_*.log"` | `campaign_gurobi/val_react.tex` (the `\Rc...` macros the sentence uses) and `campaign_gurobi/tab_react.tex` (the full table, supplementary material) |
 | **the settings of one cell** of the SCIP campaign (Section 5) | none: `campaign_scip/settings/10teams_rec50_s0.set` and `.cmd` are two files written by `job21_factorial.sh`, reproduced verbatim | — |
 
@@ -131,7 +134,8 @@ here (given the cluster time), and all available from the author on request.
 
 3. **The raw SCIP logs, ~4.2 GB** (`~/fpc/out/` and `~/fpc/sets_*/` on the
    cluster), archived as `~/archive/fpc_scip_out_sets_2026-09-03.tgz`, **436 MB
-   compressed**. They are the input of `collect_res.py`, whose output —
+   compressed** (435,658,633 bytes, md5 `12dcd9af04713f1fe7a8172ce7a247b9`).
+   They are the input of `collect_res.py`, whose output —
    `campaign_scip/results_fact.txt`, 28,243 `RES|` rows — *is* in this package
    and is the source of every table. The raw logs are also the input of
    `replay_tl.py`, which cannot therefore be re-run from this package alone.
@@ -146,7 +150,8 @@ here (given the cluster time), and all available from the author on request.
    decision is the author's.
 
 4. **The exploratory campaigns that the paper does not report.** Jobs `job00`–
-   `job20`, `job22` and their `results_*.txt`, the earlier aggregators
+   `job22` (except the census grids of Section 2, `job03`, `job04`, `job20`,
+   shipped in `prototype/`) and their `results_*.txt`, the earlier aggregators
    (`agg_e1.py`, `agg_e2.py`, `agg_cnt.py`, `agg_arms*.py`, `agg_grid.py`), the
    auxiliary instance lists (`inst_e2.txt`, `inst_cnt.txt`, `inst_target*.txt`
    of campaign 22, `lamall.txt`, `skipped_e2.txt`) and the tables built on them
@@ -154,7 +159,10 @@ here (given the cluster time), and all available from the author on request.
    included: they predate the factorial campaign that the paper is built on, and
    some of them are contaminated by the `SCIPrecomputeSolObj` defect described
    in `scip/scip_build_all.sh`. They are kept in the author's research
-   repository and are **available on request**.
+   repository and are **available on request**. One exploratory campaign *is*
+   shipped, the "pressure" campaign of `campaign_gurobi/` (`job24_ideas.sh`,
+   `agg_ideas.py`, `results/ideas*.res` and `confirm*.res`), because it shares
+   code, lists and reference values with E3; the paper does not report it.
 
 5. **`chk_mixed.py`.** An earlier version of the paper documentation refers to a
    control script by this name for the pure/mixed split quoted in the text. **It

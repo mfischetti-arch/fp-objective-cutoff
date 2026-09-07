@@ -1,0 +1,45 @@
+# The 39 instances excluded from the analysed testbed (Section 5, paragraph Instances), as printed by
+# `python agg_fact.py results_fact.txt --valid validated.txt`, section 'Esclusioni dichiarate'.
+#
+# 37 instances whose first LP is not solved within the 600 s of the probe (z_LP = '-'), one per line:
+8div-n59k11
+academictimetablebig
+cdc7-4-3-2
+comp16-3idx
+ds-big
+ex10
+ex9
+genus-g61-25
+genus-sym-g31-8
+genus-sym-g62-2
+genus-sym-grafo5708-48
+graph40-40-1rand
+neos-3116779-oban
+neos-3218348-suir
+neos-3230376-yser
+neos-3230516-zala
+neos-3283608-agout
+neos-4382714-ruvuma
+neos-4391920-timok
+neos-4409277-trave
+neos-4477313-unzha
+neos-4562542-watut
+neos-4797081-pakoka
+neos-5041756-cobark
+neos-5052403-cygnet
+neos-631710
+oocsp-racks030f7cci
+pythago7824
+pythago7825
+rmine15
+rmine21
+satellites2-25
+satellites2-40
+satellites2-60-fs
+satellites3-25
+satellites4-25
+supportcase10
+#
+# 2 instances whose arm x seed grid is incomplete (runs without statistics, a numerical error in SCIP):
+neos-3135526-osun	48/60 run utilizzabili (run senza statistiche)
+supportcase1	15/60 run utilizzabili (run senza statistiche)

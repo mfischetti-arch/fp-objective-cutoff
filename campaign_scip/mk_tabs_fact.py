@@ -5,8 +5,8 @@
     python mk_tabs_fact.py --out /tmp/x          # altrove
 
 Produce, in --out:
-    tab_fact_e1.tex     T1 sullo strato E1 (il pilota trova una soluzione)
-    tab_fact_e2.tex     T1 sullo strato E2 (il pilota non trova niente)
+    tab_fact_e1.tex     T1 sullo sottoinsieme E1 (il pilota trova una soluzione)
+    tab_fact_e2.tex     T1 sullo sottoinsieme E2 (il pilota non trova niente)
     tab_fact_paired.tex T2: confronti appaiati per ISTANZA sul gap finale, Holm (solo E1)
     tab_fact_found.tex  T3: found/not-found per run, tutte e quattro le celle, E1 ed E2
 
@@ -14,7 +14,7 @@ Solo il corpo `\\begin{tabular}...\\end{tabular}`: table, caption e label li met
 a mano. booktabs e' gia' caricato nel preambolo; il corpo del testo (\\footnotesize e simili)
 lo decide il .tex.
 
-NIENTE DEFINIZIONI NUOVE. Parsing, strati E1/E2, gamma/gap, primal integral prolungato,
+NIENTE DEFINIZIONI NUOVE. Parsing, sottoinsiemi E1/E2, gamma/gap, primal integral prolungato,
 mediana per seme dentro istanza, test dei segni e Holm sono importati da agg_fact.py, cosi'
 i numeri di queste tabelle e quelli del report markdown di agg_fact.py coincidono cifra per
 cifra (il testo del paper cita entrambi).
@@ -122,7 +122,7 @@ def main():
              r" & \multicolumn{3}{c}{completion LPs} \\",
              r"\cmidrule(lr){2-3}\cmidrule(lr){4-8}\cmidrule(lr){9-11}",
              r"variant & inst. & runs & gap (\%) & PI/TL (\%) & $t_{\mathrm{first}}$ (s)"
-             r" & rounds & LP iter. & calls & feas. & infeas. \\",
+             r" & rounds & LP iter. & calls & acc. & infeas. \\",
              r"\midrule"]
         for arm in ORDER:
             if arm not in arms:
@@ -243,10 +243,10 @@ def main():
         print("scritto %s (%d righe)" % (path, len(body)))
 
     write("tab_fact_e1.tex",
-          "T1, strato E1: %d istanze, %d bracci x %d semi" % (len(E1), len(arms), a.seeds),
+          "T1, sottoinsieme E1: %d istanze, %d bracci x %d semi" % (len(E1), len(arms), a.seeds),
           t1(E1))
     write("tab_fact_e2.tex",
-          "T1, strato E2: %d istanze, %d bracci x %d semi" % (len(E2), len(arms), a.seeds),
+          "T1, sottoinsieme E2: %d istanze, %d bracci x %d semi" % (len(E2), len(arms), a.seeds),
           t1(E2))
     write("tab_fact_paired.tex",
           "T2, SOLO E1 (%d istanze): appaiato per istanza sul gap finale, Holm su %d confronti"

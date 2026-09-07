@@ -65,6 +65,7 @@ from the cluster; adapt them to your site. `SCIPBIN`, `INST`, `SEEDS` and
 python collect_res.py logs/fact_<jobid>_*.log > results_fact.txt
 python agg_fact.py results_fact.txt --valid validated.txt
 python mk_tabs_fact.py                     # writes the four .tex bodies into ../paper
+python chk_mixed.py                        # the pure 0-1 / mixed numbers of Section 6, on stdout
 ```
 
 `collect_res.py` keeps **one pass per instance**, the one from the highest job
@@ -164,4 +165,7 @@ parameters that SCIP's master does not have (`cutlam`, `tryrounded`, `moat`,
 | `miplib2017.solu` | MIPLIB 2017 reference values |
 | `benchmark-v2.test` | the MIPLIB 2017 Benchmark Set, used to split primary from secondary |
 | `results_fact.txt` | **the raw results**: 28,243 `RES|` rows, the source of every table |
+| `chk_mixed.py` | the pure 0-1 / mixed split of E1 and the numbers of Section 6 quoted by hand (56/120, FGL vs. direct test on the two groups, the 19 instances with general integers, split by size) |
+| `fact_presolved.txt`, `fact_ncont.txt` | the "presolved problem has" line of every instance, and the `ncont` field of its `fp_exit` line: the inputs of `chk_mixed.py` |
+| `excluded_instances.txt` | the 37 + 2 excluded instances by name, as printed by `agg_fact.py` |
 | `validated.txt` | **the validation outcome**: 28,198 `VALID|` rows |

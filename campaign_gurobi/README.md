@@ -112,14 +112,17 @@ python agg_target23.py tune  results/tune50.res
 python agg_target23.py eval  results/eval50.res
 ```
 
-## The exploratory "pressure" campaign (`job24`, reported as a lead)
+## The exploratory "pressure" campaign (`job24`, **not reported in the paper**)
 
-Section 7 closes with a paragraph on constraints that press towards *feasibility*
-rather than cost: a cardinality bound, a sign-only cutoff, no-good constraints on
-failed roundings, an adaptive U′ (`reflect`), and a **local-branching ball** of
-radius one tenth of the binaries around the pilot solution, doubled when the pump
-stalls (`lb:0.1:grow`). The specs are documented one by one in the `--pressure`
-docstring of `fp_target.py`. An arm here is `<mode>[:<pressure>]`, for example
+An exploration the paper does not report (an earlier version mentioned it as a
+lead; the submitted one does not): constraints that press towards *feasibility*
+rather than cost, namely a cardinality bound, a sign-only cutoff, no-good
+constraints on failed roundings, an adaptive U′ (`reflect`), and a
+**local-branching ball** of radius one tenth of the binaries around the pilot
+solution, doubled when the pump stalls (`lb:0.1:grow`). It is shipped because it
+shares code, lists and reference values with E3; nothing in the paper depends on
+it. The specs are documented one by one in the `--pressure` docstring of
+`fp_target.py`. An arm here is `<mode>[:<pressure>]`, for example
 `completion:reflect:0.02+lb:0.1`.
 
 ```bash
