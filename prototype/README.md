@@ -19,10 +19,15 @@ original constraints, cutoff excluded.
 | `agg_band.py` | the aggregator: the three tables on the band between the cutoff and the incumbent |
 | `inst_list.txt` | the stratified sample the 37 instances come from, one per line: `family ⟨tab⟩ size band ⟨tab⟩ path ⟨tab⟩ n ⟨tab⟩ ncons ⟨tab⟩ nnz`. 60 rows, 20 per family, stratified by size class and drawn by `sample_inst.py` (seed 2026) from the census of pure-binary instances; `air03` and `disctom` appear under both MIPLIB releases, so 58 distinct instances. On 21 of them there is no band to survey and no `.json` is written: on 14 the pump without a cutoff finds no solution within the limit (`status: no_firstsol` on stdout), on 7 its first solution already equals z_LP (`fp.py` exits with `[skip]`); the 37 that enter the tables are the rest |
 | `sample_inst.py` | the stratified sampler that wrote `inst_list.txt` |
-| `grid/` | **the raw runs**: 999 `.json` (one per run) and 259 `.csv` (one per iteration trace), ~65 MB |
+| `grid/` | **the raw runs**: 999 `.json` (one per run) and 259 `.csv` (one per iteration trace), ~65 MB. Written by `job04_grid.sh` (27 configurations × 3 seeds per instance: `none` × 3, `cutoff` and `moat` × 3 λ × 3 seeds, `progressive` × 2 widths × 3 seeds; one thread, 120 s, Xeon E3-1220 v2 blades); the paper uses the `cutoff` runs only. `job20_grid120.sh` later re-ran `cutoff` seed 0 at λ 0.25 and 0.75 with the per-round `.csv` switched on (same `fp.py`, same parameters, `.json` overwritten with identical values, on the mixed `allgroups` pool since no time is measured). `job03_grid.sh` is the first version of the grid (600 s limit), superseded by `job04` and kept for the record |
+| `grid_s12/` | seeds 1 and 2 of the `cutoff` runs re-run with the per-round `.csv` (`job25_grid_s12.sh`, 04/09/2026, one thread, 120 s, Xeon E3-1220 v2): 222 `.json`, 222 `.csv` and the 348 `.log` of `fp.py`'s stdout, which carry the `no_firstsol` / `[skip]` outcome of the 21 instances that write no `.json`. ⚠️ File names in the **v2** λ convention (`"lam_conv": "v2"` in the json), unlike `grid/` |
+| `agg_band_seeds.py` | Table 1, right columns, and `band_positions_3seeds.csv`: position in the band per instance, median over three seeds (seed 0 from `grid/`, seeds 1-2 from `grid_s12/`) |
+| `chk_moat_time.py`, `chk_spikes.py` | the numbers of the two paragraphs of Section 2 after Figure 1, from the per-round `.csv` of `grid/` and `grid_s12/` (`chk_spikes.py --table` for the plain-rounding table) |
+| `job03_grid.sh`, `job04_grid.sh`, `job20_grid120.sh`, `job25_grid_s12.sh` | the SLURM jobs behind `grid/` and `grid_s12/` (see the two rows above); absolute paths under `/home/fisch/fpc`, adapt to your site |
 
 The grid covers three families — OR-Library set covering, MIPLIB 2003, MIPLIB
-2017 — three cutoff levels and three seeds, all at a 120 s limit. `agg_band.py`
+2017 — three cutoff levels and three seeds, all at a 120 s limit and one thread
+on the same blades as the SCIP campaign (Xeon E3-1220 v2). `agg_band.py`
 reads the family of an instance from `inst_list.txt` (field 0 keyed on the
 basename of field 2), so that file is required even though it is only metadata.
 
