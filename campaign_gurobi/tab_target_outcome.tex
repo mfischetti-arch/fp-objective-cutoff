@@ -7,7 +7,9 @@ three of its five seeds reach a feasible point with $c^{\top}x \le U$ within the
 (instance, seed) pairs that reach such a point, out of the $5N$ available. The target is
 $U = z_{\mathrm{best}} + a\,(\zinc - z_{\mathrm{best}})$ and $w$ is the ``rounding moat''
 as a fraction of $U - \zlp$:
-policy \textsc{naive} imposes a static cutoff constraint in the model, while \textsc{test} and \textsc{completion} impose an inner constraint at $U' = U - w\,(U - \zlp)$ and recover a point for the true target by a direct feasibility test and by FGL's LP completion, respectively. Subsets: benchmark instances (the primary test set) and non-benchmark ones; pure 0--1
+policy \textsc{naive} imposes a static cutoff constraint in the model, while \textsc{test} and \textsc{completion} impose an inner constraint at $U' = U - w\,(U - \zlp)$ and recover a point for the true target by a direct feasibility test and by FGL's LP completion, respectively. At $a=0.5$ the \textsc{test} policy is evaluated at $w=0.02$, an exploratory choice
+(the tuning rule picked $w=0$, which is \textsc{naive}). Subsets: benchmark instances (the
+primary test set) and non-benchmark ones; pure 0--1
 instances ($n_{\mathrm{cont}}=0$) and mixed ones ($n_{\mathrm{cont}}>0$).}
 \label{tab:target-outcome}
 \small

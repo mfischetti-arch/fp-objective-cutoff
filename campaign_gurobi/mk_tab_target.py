@@ -262,18 +262,20 @@ three of its five seeds reach a feasible point with $c^{\top}x \le U$ within the
 (instance, seed) pairs that reach such a point, out of the $5N$ available. The target is
 $U = z_{\mathrm{best}} + a\,(\zinc - z_{\mathrm{best}})$ and $w$ is the ``rounding moat''
 as a fraction of $U - \zlp$:
-%(arms)s. Subsets: benchmark instances (the primary test set) and non-benchmark ones; pure 0--1
+%(arms)s. At $a=0.5$ the \textsc{test} policy is evaluated at $w=0.02$, an exploratory choice
+(the tuning rule picked $w=0$, which is \textsc{naive}). Subsets: benchmark instances (the
+primary test set) and non-benchmark ones; pure 0--1
 instances ($n_{\mathrm{cont}}=0$) and mixed ones ($n_{\mathrm{cont}}>0$)."""
 
-CAP2 = r"""Paired per-instance comparisons. W/L/T is the number of instances on which the
-first policy wins, loses, or ties against the second on the \emph{outcome}, i.e.\ on the
+CAP2 = r"""Paired per-instance comparisons. W/T/L is the number of instances on which the
+first policy wins, ties, or loses against the second on the \emph{outcome}, i.e.\ on the
 per-instance median success defined in Table~\ref{tab:target-outcome}; $p$ is the exact
 two-sided sign test on the non-ties; $p_{\mathrm{Holm}}$ is the Holm correction over the 12
 declared tests, namely 2 values of $a$ $\times$ 2 families (benchmark, non-benchmark) $\times$
 3 comparisons --- the \emph{all} rows are reported for information only and are not part of the
 Holm family. \emph{Faster} counts, among the instances solved by both policies, how many times
 the first policy's median time to success is lower than the second's by at least 5\%, how many
-times the second's is lower, and how many times the two tie within that tolerance."""
+times the two tie within that tolerance, and how many times the second's is lower."""
 
 ARMS_SENTENCE = (r"policy \textsc{naive} imposes a static cutoff constraint in the model, while "
                  r"\textsc{test} and \textsc{completion} impose an inner constraint at "
@@ -313,7 +315,7 @@ def write_paired(data, path):
          r"\label{tab:target-paired}", r"\small",
          r"\setlength{\tabcolsep}{5pt}",
          r"\begin{tabular}{lrcrrc}", r"\toprule",
-         r"Comparison & $N$ & W/L/T & $p$ & $p_{\mathrm{Holm}}$ & faster W/L/T \\"]
+         r"Comparison & $N$ & W/T/L & $p$ & $p_{\mathrm{Holm}}$ & faster W/T/L \\"]
     for a, _ in ALPHAS:
         for fam_lab, _ in FAMILIES:
             L += [r"\midrule",
@@ -326,11 +328,12 @@ def write_paired(data, path):
 
 
 def paired_row(e):
-    """Una riga di confronto: bracci, N, W/L/T, p, p_Holm, faster."""
+    """Una riga di confronto: bracci, N, W/T/L (meglio-pari-peggio, come nel resto del
+    paper), p, p_Holm, faster W/T/L."""
     ph = tex_p(e["p_holm"]) if "p_holm" in e else "--"
     return (r"\quad %s vs.\ %s & %d & %d/%d/%d & %s & %s & %d/%d/%d \\"
-            % (ARM_TEX[e["A"]], ARM_TEX[e["B"]], e["n"], e["w"], e["l"], e["t"],
-               tex_p(e["p"]), ph, e["faster"][0], e["faster"][1], e["faster"][2]))
+            % (ARM_TEX[e["A"]], ARM_TEX[e["B"]], e["n"], e["w"], e["t"], e["l"],
+               tex_p(e["p"]), ph, e["faster"][0], e["faster"][2], e["faster"][1]))
 
 
 def write(path, lines):

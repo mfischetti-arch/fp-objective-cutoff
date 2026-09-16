@@ -2,7 +2,7 @@
 %% input: C:\usr\PAPER\2026_ideas\FP_obj_cutoff\fpc\results_fact.txt
 %% nomi dei bracci: macro \armnone \armchk \armfgl \armfb \armfbn del preambolo
 %% solo il tabular: table/caption/label e il corpo del testo li mette il .tex
-%% T2, SOLO E1 (176 istanze): appaiato per istanza sul gap finale, Holm su 12 confronti
+%% T2, SOLO E1 (176 istanze): appaiato per istanza sul gap finale, Holm su 12 confronti; in coda 2 confronti post hoc, fuori dalla famiglia
 
 \begin{tabular}{lrrrrrr}
 \toprule
@@ -22,5 +22,9 @@ comparison ($A$ vs.\ $B$) & $A$ better & tie & $A$ worse & sign test & Holm & $B
 \armfgl{0.5} vs.\ \armchk{\nocut} & 114 & 52 & 10 & $<10^{-4}$ & $<10^{-4}$ & $+13.3$ \\
 \armfb{0.5} vs.\ \armchk{0.5} & 18 & 73 & 85 & $<10^{-4}$ & $<10^{-4}$ & $-7.6$ \\
 \armfbn{0.5} vs.\ \armnone{0.5} & 19 & 67 & 90 & $<10^{-4}$ & $<10^{-4}$ & $-17.7$ \\
+\midrule
+\multicolumn{7}{l}{\emph{added after the design (post hoc); not in the Holm family}} \\
+\armfgl{0.5} vs.\ \armnone{\nocut} & 116 & 51 & 9 & $<10^{-4}$ & -- & $+13.1$ \\
+\armfgl{0.5} vs.\ \armnone{0.5} & 87 & 75 & 14 & $<10^{-4}$ & -- & $+3.3$ \\
 \bottomrule
 \end{tabular}

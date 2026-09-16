@@ -7,7 +7,9 @@
 Produce, in --out:
     tab_fact_e1.tex     T1 sullo sottoinsieme E1 (il pilota trova una soluzione)
     tab_fact_e2.tex     T1 sullo sottoinsieme E2 (il pilota non trova niente)
-    tab_fact_paired.tex T2: confronti appaiati per ISTANZA sul gap finale, Holm (solo E1)
+    tab_fact_paired.tex T2: confronti appaiati per ISTANZA sul gap finale, Holm (solo E1);
+                        in coda i due confronti POST HOC (fuori dalla famiglia di Holm)
+    tab_fact_paired_e2.tex  T2 sul sottoinsieme E2: i 12 confronti dichiarati, stesso endpoint
     tab_fact_found.tex  T3: found/not-found per run, tutte e quattro le celle, E1 ed E2
 
 Solo il corpo `\\begin{tabular}...\\end{tabular}`: table, caption e label li mette il .tex
@@ -66,6 +68,11 @@ FAM = [("recbare", "bare", "direct check vs none, no cutoff"),
        ("rec50_f", "recbare", "faithful FGL vs recovery without cutoff"),
        ("rec50_fb", "rec50", "fallback on c'xhat vs none, lambda=0.5"),
        ("cut50_fb", "cut50", "fallback on c'xhat vs none, no recovery")]
+
+# aggiunti DOPO il disegno, come titolo del paper (sec:e1): stampati in coda a T2 con
+# il p grezzo del test dei segni, ma FUORI dalla famiglia di Holm (Holm = "--").
+POSTHOC = [("rec50_f", "bare", "faithful FGL vs the plain pump"),
+           ("rec50_f", "cut50", "faithful FGL vs the black-box cutoff")]
 
 if set(ORDER) != set(A.ARMS):
     raise SystemExit("ORDER e agg_fact.ARMS non coincidono: %s" %
@@ -172,7 +179,8 @@ def main():
                 t += 1
         return b, t, w, (A.med(diffs) if diffs else None)
 
-    def t2(sl):
+    def t2(sl, extra=()):
+        """`extra`: confronti post hoc, in coda e fuori dalla famiglia di Holm"""
         rows = []
         for x, y, lab in FAM:
             if x not in arms or y not in arms:
@@ -189,6 +197,14 @@ def main():
             L.append("%s vs.\\ %s & %d & %d & %d & %s & %s & %s \\\\"
                      % (TEX[r[0]], TEX[r[1]], r[2], r[3], r[4], pv(r[5]), pv(pa),
                         ("$%+.1f$" % r[6]) if r[6] is not None else "--"))
+        if extra:
+            L += [r"\midrule",
+                  r"\multicolumn{7}{l}{\emph{added after the design (post hoc); not in the Holm family}} \\"]
+            for x, y, lab in extra:
+                b, t, w, md = paired(sl, x, y)
+                L.append("%s vs.\\ %s & %d & %d & %d & %s & -- & %s \\\\"
+                         % (TEX[x], TEX[y], b, t, w, pv(A.sign_test(b, w)),
+                            ("$%+.1f$" % md) if md is not None else "--"))
         L += [r"\bottomrule", r"\end{tabular}"]
         return L
 
@@ -248,7 +264,11 @@ def main():
           t1(E2))
     write("tab_fact_paired.tex",
           "T2, SOLO E1 (%d istanze): appaiato per istanza sul gap finale, Holm su %d confronti"
-          % (len(E1), len(FAM)), t2(E1))
+          % (len(E1), len(FAM)) + "; in coda %d confronti post hoc, fuori dalla famiglia" % len(POSTHOC),
+          t2(E1, POSTHOC))
+    write("tab_fact_paired_e2.tex",
+          "T2, SOLO E2 (%d istanze): appaiato per istanza sul gap finale, Holm su %d confronti"
+          % (len(E2), len(FAM)), t2(E2))
     write("tab_fact_found.tex",
           "T3: found/not-found per run, tutte e quattro le celle (neither inclusa), E1 ed E2",
           t3())

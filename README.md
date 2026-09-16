@@ -76,12 +76,14 @@ those of `paper/manuscript.pdf`.
 | **Figure 2** (where the lost improving points sit inside the band) | `cd paper && python figs_v2.py` | `paper/fig5_band.pdf`, from `paper/band_positions_3seeds.csv` |
 | **numbers of the two paragraphs of Section 2 after Figure 1** (round of the first lost rounding vs. round of the first point under U; plain vs. perturbed roundings) | `cd prototype && python chk_moat_time.py` and `python chk_spikes.py --table` | printed to stdout; quoted by hand in the text |
 | **pure 0-1 vs. mixed numbers of Section 6** (56/120, FGL vs. direct test on the two groups, general integers, split by size) | `cd campaign_scip && python chk_mixed.py` | printed to stdout; quoted by hand in the text |
-| **Table 2** (E1, the twelve pre-declared paired comparisons, Holm) | `cd campaign_scip && python mk_tabs_fact.py` | `paper/tab_fact_paired.tex` |
-| **Table 3** (E3, target experiment, outcome) | `cd campaign_gurobi && python mk_tab_target.py` | `campaign_gurobi/tab_target_outcome.tex`, copied to `paper/` |
-| **Table 4** (E1 per arm) | `cd campaign_scip && python mk_tabs_fact.py` | `paper/tab_fact_e1.tex` |
-| **Table 5** (E2 per arm) | `cd campaign_scip && python mk_tabs_fact.py` | `paper/tab_fact_e2.tex` |
-| **Table 6** (found / not found, paired per run) | `cd campaign_scip && python mk_tabs_fact.py` | `paper/tab_fact_found.tex` |
-| **Table 7** (E3, paired comparisons on the outcome) | `cd campaign_gurobi && python mk_tab_target.py` | `campaign_gurobi/tab_target_paired.tex`, copied to `paper/` |
+| **Table 2** (the three experiments at a glance) | none: written by hand in the manuscript | — |
+| **Table 3** (E1, the twelve pre-declared paired comparisons, Holm; the last two rows are the two post hoc comparisons of the headline, outside the Holm family) | `cd campaign_scip && python mk_tabs_fact.py` | `paper/tab_fact_paired.tex` |
+| **Table 4** (E3, target experiment, outcome) | `cd campaign_gurobi && python mk_tab_target.py` | `campaign_gurobi/tab_target_outcome.tex`, copied to `paper/` |
+| **Table 5** (E1 per arm) | `cd campaign_scip && python mk_tabs_fact.py` | `paper/tab_fact_e1.tex` |
+| **Table 6** (E2 per arm) | `cd campaign_scip && python mk_tabs_fact.py` | `paper/tab_fact_e2.tex` |
+| **Table 7** (E2, the twelve declared comparisons paired per instance on the final gap) | `cd campaign_scip && python mk_tabs_fact.py` | `paper/tab_fact_paired_e2.tex` |
+| **Table 8** (found / not found, paired per run) | `cd campaign_scip && python mk_tabs_fact.py` | `paper/tab_fact_found.tex` |
+| **Table 9** (E3, paired comparisons on the outcome; W/T/L = wins/ties/losses, as in the rest of the paper) | `cd campaign_gurobi && python mk_tab_target.py` | `campaign_gurobi/tab_target_paired.tex`, copied to `paper/` |
 | **numbers quoted in the running text** of Sections 6-8 (medians, counts, cost of the completion, pure vs mixed, split by size) | `cd campaign_scip && python agg_fact.py results_fact.txt --valid validated.txt` | a Markdown report on stdout; the manuscript carries a `%%` comment next to each quoted number saying which line of this report it comes from |
 | **independent validation** of every `.sol` (Section 5) | `cd campaign_scip && python agg_fact.py results_fact.txt --valid validated.txt` | the section "Validazione indipendente" of the same report, read from `validated.txt` |
 | **declared exclusions** (37 + 2 instances, Section 5) | same command | the section "Esclusioni dichiarate" of the same report; the list is also shipped as `campaign_scip/excluded_instances.txt` |
