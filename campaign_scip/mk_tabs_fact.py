@@ -117,11 +117,11 @@ def main():
 
     # ------------------------------------------------------------------- T1
     def t1(sl):
-        L = [r"\begin{tabular}{lrrrrrrrrrr}", r"\toprule",
-             r" & \multicolumn{2}{c}{with a solution} & \multicolumn{5}{c}{medians}"
+        L = [r"\begin{tabular}{lrrrrrrrrr}", r"\toprule",
+             r" & \multicolumn{2}{c}{with a solution} & \multicolumn{4}{c}{medians}"
              r" & \multicolumn{3}{c}{completion LPs} \\",
-             r"\cmidrule(lr){2-3}\cmidrule(lr){4-8}\cmidrule(lr){9-11}",
-             r"variant & inst. & runs & gap (\%) & PI/TL (\%) & $t_{\mathrm{first}}$ (s)"
+             r"\cmidrule(lr){2-3}\cmidrule(lr){4-7}\cmidrule(lr){8-10}",
+             r"variant & inst. & runs & gap (\%) & $t_{\mathrm{first}}$ (s)"
              r" & rounds & LP iter. & calls & acc. & infeas. \\",
              r"\midrule"]
         for arm in ORDER:
@@ -134,8 +134,6 @@ def main():
                                           for s in range(a.seeds)))
             wr = sum(1 for r in recs if r["primal"] is not None)
             g = A.med([inst_med(i, arm, "gap") for i in sl if inst_med(i, arm, "gap") is not None])
-            pit = A.med([inst_med(i, arm, "pin") / (inst_med(i, arm, "tl") or 1.0)
-                         for i in sl if inst_med(i, arm, "pin") is not None])
             tf = A.med([r["tfirst"] for r in recs if r["tfirst"] is not None])
             nl = A.med([r["nloops"] for r in recs])
             it = A.med([r["nlpiter"] for r in recs])
@@ -143,8 +141,8 @@ def main():
             c2 = sum(r["lpfixfeas"] for r in recs)
             c3 = sum(r["lpfixinf"] for r in recs)
             comp = ([num(c1), num(c2), num(c3)] if (arm in FGL or c1) else ["--", "--", "--"])
-            L.append("%s & %s/%s & %s/%s & %.2f & %.1f & %s & %s & %s & %s & %s & %s \\\\"
-                     % (TEX[arm], num(wi), num(len(sl)), num(wr), num(len(recs)), g, pit,
+            L.append("%s & %s/%s & %s/%s & %.2f & %s & %s & %s & %s & %s & %s \\\\"
+                     % (TEX[arm], num(wi), num(len(sl)), num(wr), num(len(recs)), g,
                         ("%.2f" % tf) if tf is not None else "--", num(nl), num(it), *comp))
             if arm in GAP_AFTER:
                 L.append(r"\addlinespace")

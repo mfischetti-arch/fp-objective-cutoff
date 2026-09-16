@@ -260,8 +260,8 @@ with five random seeds under each policy. An instance counts as \emph{solved} wh
 three of its five seeds reach a feasible point with $c^{\top}x \le U$ within the time limit
 (the outcome is the median over seeds of the success indicator); \emph{pairs} is the number of
 (instance, seed) pairs that reach such a point, out of the $5N$ available. The target is
-$U = z_{\mathrm{best}} + a\,(\zinc - z_{\mathrm{best}})$ and $w$ is the width of the inner
-margin as a fraction of $U - \zlp$:
+$U = z_{\mathrm{best}} + a\,(\zinc - z_{\mathrm{best}})$ and $w$ is the ``rounding moat''
+as a fraction of $U - \zlp$:
 %(arms)s. Subsets: benchmark instances (the primary test set) and non-benchmark ones; pure 0--1
 instances ($n_{\mathrm{cont}}=0$) and mixed ones ($n_{\mathrm{cont}}>0$)."""
 

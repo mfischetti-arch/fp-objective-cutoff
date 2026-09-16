@@ -75,7 +75,8 @@ each other, the `probe|FAIL` and `SKIP` rows have no such key and the stale one
 would survive next to the fresh one.
 
 `agg_fact.py` is where every definition lives — parsing, the E1/E2 strata, gamma
-and gap, the prolonged primal integral, the median over seeds inside an
+and gap, the prolonged primal integral (still computed, no longer reported in
+the paper since 2026-09-16), the median over seeds inside an
 instance, the exact sign test and Holm. `mk_tabs_fact.py` imports it rather than
 duplicating anything, so the numbers in the tables and those in the aggregator's
 Markdown report agree digit by digit. Its report also prints, and the paper
