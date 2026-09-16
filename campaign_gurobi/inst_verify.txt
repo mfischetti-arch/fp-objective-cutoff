@@ -1,0 +1,3 @@
+# set	name	mps	zbest	bench
+eval	10teams	/nfsd/rop/instances/miplib2017/10teams.mps.gz	924	0
+eval	30_70_45_095_98	/nfsd/rop/instances/miplib2017/30_70_45_095_98.mps.gz	12	0

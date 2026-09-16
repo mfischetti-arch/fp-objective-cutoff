@@ -68,6 +68,46 @@ il runner non lo esegue due volte.
       completamento coincide col test -- a meno del costo dell'LP, che qui viene
       comunque pagato a ogni giro: e' il costo onesto della procedura di FGL.
 
+  --mode test-adapt | completion-adapt      (Q3 del referee MPC, 16/09/2026)
+      come test / completion, ma la fascia NON e' una frazione fissa w del gap
+      G = U - z_LP: e' scalata, istanza per istanza e run per run, sul
+      ROUNDING GAP OSSERVATO delta_k = c'x^_k - c'x~_k (sez. 2 del paper: di
+      quanto l'arrotondamento peggiora il costo), misurato a OGNI giro
+      sull'arrotondamento puro dell'iterato LP, PRIMA del flip debole o del
+      restart. La regola, con K = --adapt-k (default 5):
+        * giri 1..K: riga interna c'x <= U, cioe' w = 0 (e' naive, con la riga
+          nell'LP di proiezione e il recupero del braccio);
+        * dal giro K+1 in poi: U' = U - m, con m = mediana dei delta osservati,
+          e due sotto-regole (--adapt-rule):
+              freeze    m = mediana dei PRIMI K delta, congelata: U' cambia una
+                        volta sola (regola PRIMARIA, dichiarata prima della
+                        campagna);
+              running   m = mediana di TUTTI i delta osservati finora,
+                        ricalcolata a ogni giro: U' si muove con la corsa
+                        (sotto-variante secondaria);
+              abs       m = mediana di |delta| sui primi K giri, congelata:
+                        sotto-variante ESPLORATIVA aggiunta dopo lo smoke test
+                        del 16/09, che ha mostrato delta NEGATIVO nel 97% dei
+                        giri (l'iterato LP sta sulla riga c'x <= U e
+                        l'arrotondamento abbassa il costo): con la regola
+                        letterale di Q3 la fascia e' nulla, e 'abs' scala la
+                        fascia sulla GRANDEZZA del rounding gap osservato;
+        * m viene troncato in [0, G(1 - eps)]: se la mediana e' <= 0
+          (l'arrotondamento in media non peggiora il costo) la fascia resta
+          nulla, e la riga non scende mai sotto z_LP + eps G, con
+          eps = --adapt-eps (default 1e-3), cosi' l'LP di proiezione non si
+          svuota mai per colpa della fascia.
+      Tutto il resto -- pompa, perturbazioni, recupero, uscita, budget,
+      validazione -- e' identico a test / completion. Nel JSON compaiono le
+      chiavi adapt_rule, adapt_k, n_delta (giri con delta misurato), moat (l'm
+      applicato alla fine, 0 se mai applicato), uprime_final, uprime_min,
+      n_uprime_changes, delta_med_all (mediana di tutti i delta della corsa,
+      diagnostica), delta_frac_pos (frazione dei delta > 0), e w_eff = moat / G
+      e' la fascia effettiva in unita' di gap, confrontabile col w fisso.
+      --Uprime e --pressure non valgono per questi modi (BadOption).
+      VINCOLO DI IDENTITA': i modi naive/test/completion non sono toccati (le
+      chiavi nuove esistono solo nei modi adapt).
+
 Convenzioni.
   * SENSO DI MINIMO sempre. Un modello di massimo viene convertito subito dopo
     la lettura (ModelSense e coefficienti dell'obiettivo negati, costante
@@ -205,6 +245,10 @@ sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from fp import violation as fp_violation  # noqa: E402
 
 TOL = 1e-6
+
+# i modi con la fascia ADATTIVA (Q3): come test/completion, riga interna con
+# U' = U - mediana(delta) dal giro K+1 in poi (vedi il docstring in testa).
+ADAPT_MODES = ("test-adapt", "completion-adapt")
 
 
 class Skip(Exception):
@@ -1205,6 +1249,50 @@ def pump(P, args, rng, S):
                      name="objcut")
         lp.update()
 
+    # --- la fascia ADATTIVA (test-adapt / completion-adapt, Q3): la riga
+    #     interna parte a U (w = 0) e scende a U - m dal giro K+1, con m la
+    #     mediana dei rounding gap delta_k osservati (regola nel docstring).
+    #     Il RHS si cambia sull'handle della riga; G = U - z_LP e' il gap.
+    adapt = mode in ADAPT_MODES
+    adapt_row = None
+    adapt_G = None
+    adapt_deltas = []
+    adapt_up = None
+    adapt_moat = 0.0
+    if adapt:
+        adapt_row = lp.addConstr(gp.LinExpr(c.tolist(), lpv) <= U - objcon,
+                                 name="objcut")
+        lp.update()
+        adapt_up = U
+        adapt_G = U - z_lp
+        S["uprime_final"] = S["uprime_min"] = U
+
+    def _adapt_update():
+        """Dal giro K+1: m = mediana dei delta (i primi K se freeze, tutti se
+        running), troncata in [0, G(1-eps)]; U' = U - m. Cambia il RHS solo se
+        U' si sposta davvero."""
+        nonlocal adapt_up, adapt_moat
+        if adapt_G is None or adapt_G <= 0 or len(adapt_deltas) < args.adapt_k:
+            return
+        if args.adapt_rule in ("freeze", "abs"):
+            if S["n_uprime_changes"] or len(adapt_deltas) > args.adapt_k:
+                return                       # gia' congelata (o m <= 0 al giro K)
+            first = adapt_deltas[:args.adapt_k]
+            if args.adapt_rule == "abs":
+                first = [abs(v) for v in first]
+            m = float(np.median(first))
+        else:
+            m = float(np.median(adapt_deltas))
+        m = min(max(m, 0.0), adapt_G * (1.0 - args.adapt_eps))
+        new_up = U - m
+        if abs(new_up - adapt_up) <= TOL * max(1.0, abs(U)):
+            return                           # m ~ 0 (o invariata): riga ferma
+        adapt_row.RHS = new_up - objcon
+        adapt_up, adapt_moat = new_up, m
+        S["n_uprime_changes"] += 1
+        S["uprime_final"] = new_up
+        S["uprime_min"] = min(S["uprime_min"], new_up)
+
     # finestra di ciclo: i digest degli ultimi --cycle-window arrotondamenti
     # (FGL: "last 3 iterations"). Prima era un insieme su TUTTA la storia, che
     # non e' la regola di FGL e con un budget a tempo cresceva senza limite.
@@ -1227,6 +1315,11 @@ def pump(P, args, rng, S):
         #      assoluto e' sicuro. (_key porta comunque a int8: cintura doppia.)
         x_hat = x_t.copy()
         x_hat[bidx] = np.abs(np.round(x_t[bidx]))
+        if adapt:
+            # rounding gap del giro, sull'arrotondamento PURO (prima di flip e
+            # restart): delta = c'x^ - c'x~, e le continue sono le stesse.
+            adapt_deltas.append(float(c[bidx] @ (x_hat[bidx] - x_t[bidx])))
+            S["n_delta"] = len(adapt_deltas)
 
         # ---- candidate: le binarie su cui l'LP NON e' integrale. La soglia e'
         #      1e-6 come in SCIP, che esclude solo le integrali a tolleranza;
@@ -1349,6 +1442,12 @@ def pump(P, args, rng, S):
         if pres is not None:
             pres.on_iteration(x_hat, iter_v, iter_x)
 
+        # ---- la fascia adattiva: U' = U - mediana(delta) dal giro K+1 in poi
+        #      (freeze: una volta sola; running: a ogni giro). Solo se il
+        #      bersaglio non e' stato raggiunto, come le righe di pressione.
+        if adapt:
+            _adapt_update()
+
         # ---- obiettivo dell'LP di proiezione: DISTANZA PURA sulle binarie
         #      (e' fp.py con alpha = 0; la normalizzazione 1/sqrt(nb) e' un
         #      fattore positivo e non cambia l'argmin). Le continue restano
@@ -1377,7 +1476,11 @@ def pump(P, args, rng, S):
             # LP di proiezione vuoto: succede se U' < z_LP (w > 1), oppure se
             # la riga c'x <= U del braccio naive taglia via tutto il poliedro.
             status = "error"
-            if pres is None:
+            if adapt:
+                S["error"] = (f"LP di proiezione non ottimo (status {lp.Status}); "
+                              f"fascia adattiva U'={adapt_up} (moat={adapt_moat}), "
+                              f"z_LP={z_lp}")
+            elif pres is None:
                 S["error"] = (f"LP di proiezione non ottimo (status {lp.Status}); "
                               f"riga interna U'={args.Uprime}, z_LP={z_lp}")
             else:
@@ -1412,6 +1515,14 @@ def pump(P, args, rng, S):
     if U is not None and S["zlp"] is not None and args.Uprime is not None:
         den = U - S["zlp"]
         S["w_eff"] = (U - args.Uprime) / den if abs(den) > TOL else None
+    if adapt:
+        S["moat"] = adapt_moat
+        S["uprime_final"] = adapt_up
+        S["w_eff"] = (adapt_moat / adapt_G if adapt_G is not None
+                      and abs(adapt_G) > TOL else None)
+        if adapt_deltas:
+            S["delta_med_all"] = float(np.median(adapt_deltas))
+            S["delta_frac_pos"] = float(np.mean(np.array(adapt_deltas) > 0))
     if pres is not None:
         pres.finish()
 
@@ -1440,6 +1551,7 @@ def wants_completion(args):
     'completion'; i due flag esistono per poter dare lo stesso recupero anche al
     pilota e al naive, se il runner lo vuole."""
     return (args.mode == "completion"
+            or args.mode == "completion-adapt"
             or (args.mode == "pilot" and args.pilot_completion)
             or (args.mode == "naive" and args.naive_completion))
 
@@ -1501,6 +1613,15 @@ def new_summary(args, path):
             n_lb_relax=0, n_card_relax=0, n_nogood_added=0, n_lp_extra=0,
             n_center_moves=0, track_e_mean=None,
         )
+    if args.mode in ADAPT_MODES:
+        # la fascia adattiva (Q3): chiavi SOLO in questi modi, per il vincolo
+        # di identita' del JSON degli altri bracci.
+        S.update(
+            adapt_rule=args.adapt_rule, adapt_k=args.adapt_k,
+            adapt_eps=args.adapt_eps,
+            n_delta=0, moat=0.0, uprime_final=None, uprime_min=None,
+            n_uprime_changes=0, delta_med_all=None, delta_frac_pos=None,
+        )
     return S
 
 
@@ -1527,7 +1648,18 @@ def main():
                     "(quattro bracci: pilot, naive, test, completion).")
     p.add_argument("mps", help="istanza .mps / .mps.gz")
     p.add_argument("--mode", required=True,
-                   choices=["pilot", "naive", "test", "completion"])
+                   choices=["pilot", "naive", "test", "completion",
+                            "test-adapt", "completion-adapt"])
+    p.add_argument("--adapt-rule", choices=["freeze", "running", "abs"], default="freeze",
+                   help="test-adapt/completion-adapt: m = mediana dei PRIMI K "
+                        "delta, congelata (freeze, primaria), o di TUTTI i delta "
+                        "finora, a ogni giro (running), o di |delta| sui primi K, "
+                        "congelata (abs, esplorativa)")
+    p.add_argument("--adapt-k", type=int, default=5,
+                   help="K: giri di sola misura (w = 0) prima di applicare la "
+                        "fascia adattiva")
+    p.add_argument("--adapt-eps", type=float, default=1e-3,
+                   help="la riga adattiva non scende sotto z_LP + eps (U - z_LP)")
     p.add_argument("--U", type=float, default=None,
                    help="bersaglio, nel senso di MINIMO del modello convertito")
     p.add_argument("--Uprime", type=float, default=None,
@@ -1617,6 +1749,14 @@ def main():
         if (args.mode in ("test", "completion")
                 and args.Uprime is None and not args.pressure):
             raise Skip(f"--Uprime e' obbligatorio per --mode {args.mode}")
+        if args.mode in ADAPT_MODES:
+            if args.Uprime is not None:
+                raise BadOption(f"--Uprime non vale per --mode {args.mode}: la "
+                                f"riga interna parte a U e scende da sola")
+            if args.adapt_k < 1:
+                raise BadOption("--adapt-k deve essere >= 1")
+            if not (0 < args.adapt_eps < 1):
+                raise BadOption("--adapt-eps deve stare in (0,1)")
 
         t = time.perf_counter()
         P = load(args.mps, args.mode, args.U, wants_completion(args),

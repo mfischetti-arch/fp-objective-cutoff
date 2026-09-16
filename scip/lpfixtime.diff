@@ -1,0 +1,96 @@
+--- a/src/scip/heur_feaspump.c  (scip_f5, dba4b2a + patch f5)
++++ b/src/scip/heur_feaspump.c  (scip_f6 = f5 + scip_patch_lpfixtime.py)
+@@ -60,6 +60,7 @@
+ #include "scip/scip_solvingstats.h"
+ #include "scip/scip_tree.h"
+ #include "scip/scip_var.h"
++#include "scip/scip_timing.h"
+ #include "lpi/lpi.h"
+ 
+ 
+@@ -770,6 +771,8 @@
+    SCIP_Real* fixsol;         /* primal solution of the clone */
+    int fixn;                  /* number of integer columns */
+    int fixncols;              /* number of columns of the clone */
++   SCIP_CLOCK* fixclock;      /* wall clock of the completion work, round after round (M14) */
++   SCIP_CLOCK* fixbuildclock; /* wall clock of building the clone, once per call (M14) */
+    int rrownext;              /* next direction to try */
+    int rrowactive;            /* index of the row whose side is finite right now, or -1 */
+    SCIP_Real moatwidth;       /* running estimate of the rounding gap */
+@@ -1004,6 +1007,8 @@
+    fixsol = NULL;
+    fixn = 0;
+    fixncols = 0;
++   fixclock = NULL;
++   fixbuildclock = NULL;
+    SCIP_CALL( SCIPallocBufferArray(scip, &lastalphas, heurdata->cyclelength) );
+    SCIP_CALL( SCIPallocBufferArray(scip, &cycles, heurdata->cyclelength) );
+ 
+@@ -1069,6 +1074,9 @@
+          for( k = 0; k < nclonecols; ++k )
+             cnnz += SCIPcolGetNLPNonz(clonecols[k]);
+ 
++         SCIP_CALL( SCIPcreateClock(scip, &fixclock) );
++         SCIP_CALL( SCIPcreateClock(scip, &fixbuildclock) );
++         SCIP_CALL( SCIPstartClock(scip, fixbuildclock) );
+          SCIP_CALL( SCIPlpiCreate(&fixlpi, SCIPgetMessagehdlr(scip), "fp_fixlp", SCIP_OBJSEN_MINIMIZE) );
+          lpiinf = SCIPlpiInfinity(fixlpi);
+ 
+@@ -1146,6 +1154,11 @@
+       }
+    }
+ 
++   if( fixbuildclock != NULL )
++   {
++      SCIP_CALL( SCIPstopClock(scip, fixbuildclock) );
++   }
++
+    /* start diving */
+    SCIP_CALL( SCIPstartDive(scip) );
+ 
+@@ -1514,6 +1527,8 @@
+             SCIP_COL** curcols;
+             int ncurcols;
+ 
++            SCIP_CALL( SCIPstartClock(scip, fixclock) );
++
+             SCIP_CALL( SCIPgetLPColsData(scip, &curcols, &ncurcols) );
+ 
+             /* the column set must still be the one the clone was built from */
+@@ -1571,6 +1586,7 @@
+                else if( SCIPlpiIsPrimalInfeasible(fixlpi) )
+                   heurdata->nlpfixinf++;
+             }
++            SCIP_CALL( SCIPstopClock(scip, fixclock) );
+          }
+       }
+ 
+@@ -1963,7 +1979,7 @@
+       " rfeas=%d rabove=%d rimprove=%d"
+       " rvfeas=%d rv25=%d rv50=%d rv75=%d"
+       " rcut=%d rcutnosep=%d rcutinf=%d"
+-      " lpfix=%d lpfixfeas=%d lpfixinf=%d ncont=%d fixcols=%d fixint=%d\n",
++      " lpfix=%d lpfixfeas=%d lpfixinf=%d ncont=%d fixcols=%d fixint=%d lpfixtime=%.3f lpfixbuild=%.3f\n",
+       nloops, nfracs, nstallloops, maxstallloops, heurdata->nlpiterations,
+       adjustedMaxNLPIterations(maxnlpiterations, nsolsfound, nstallloops),
+       lperror, lpsolstat, SCIPisStopped(scip), heurdata->nintegralfound,
+@@ -1971,7 +1987,9 @@
+       heurdata->nrvfeas, heurdata->nrv25, heurdata->nrv50, heurdata->nrv75,
+       heurdata->nrcut, heurdata->nrcutnosep, heurdata->nrcutinf,
+       heurdata->nlpfix, heurdata->nlpfixfeas, heurdata->nlpfixinf,
+-      SCIPgetNContVars(scip) + SCIPgetNContImplVars(scip), fixncols, fixn);
++      SCIPgetNContVars(scip) + SCIPgetNContImplVars(scip), fixncols, fixn,
++      fixclock != NULL ? SCIPgetClockTime(scip, fixclock) : 0.0,
++      fixbuildclock != NULL ? SCIPgetClockTime(scip, fixbuildclock) : 0.0);
+ 
+    if( nfracs == 0 && !lperror && lpsolstat == SCIP_LPSOLSTAT_OPTIMAL )
+    {
+@@ -1998,6 +2016,8 @@
+       SCIPfreeBlockMemoryArray(scip, &fixbd, fixncols);
+       SCIPfreeBlockMemoryArray(scip, &fixind, fixncols);
+       SCIP_CALL( SCIPlpiFree(&fixlpi) );
++      SCIP_CALL( SCIPfreeClock(scip, &fixclock) );
++      SCIP_CALL( SCIPfreeClock(scip, &fixbuildclock) );
+    }
+    if( rrows != NULL )
+    {
