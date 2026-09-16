@@ -26,7 +26,8 @@ LICENSE                MIT
 CITATION.cff           how to cite the software
 .gitignore
 
-scip/                  the patched SCIP: patch chain, build script with pinned commits, NOTICE
+scip/                  the patched SCIP: patch chain, build script with pinned commits, NOTICE;
+                       scip/minimal/ is the self-contained minimal patch (cutlam, tryrounded, lpfix, restartonsol)
 campaign_scip/         the factorial campaign of Sections 5-6 (SCIP): job, aggregators, raw results, the settings file of one cell
 prototype/             the from-scratch pump of Section 2: fp.py, its grid of runs, the band aggregator
 campaign_gurobi/       experiment E3 of Section 7 (Gurobi): the three-phase target experiment;

@@ -101,3 +101,36 @@ because removing it would change the binary that produced the results.
 | `scip_patch_lpfix.py` | the FGL completion: fix the integers to x̂ and minimise cᵀx on the original constraints |
 | `scip_patch_notice.py` | writes the Apache 2.0 §4(b) modification notice at the top of the file |
 | `NOTICE.md` | attribution and licence of the SCIP material (Italian) |
+| `minimal/` | **the minimal patch**, see below |
+
+## The minimal patch (`minimal/`)
+
+The chain above is the *experimental* instrument: counters, diagnostics, the
+moat, the oscillating and random cutoffs, the fallback. What the paper
+recommends is three things only, and `minimal/heur_feaspump_min.diff` is a
+self-contained unified diff against the pristine `heur_feaspump.c` at commit
+`dba4b2a` (13 hunks, +341/−3 lines, `git apply` on a clean tree) that adds
+exactly them, each behind a parameter whose default keeps upstream behaviour:
+
+| parameter | default | what it does |
+|---|---|---|
+| `heuristics/feaspump/cutlam` | −1 (off) | the objective cutoff `c'x ≤ U`, `U = z_LP + cutlam·(z_inc − z_LP)`, as a row of the diving LP, created once an incumbent exists and moved with it |
+| `heuristics/feaspump/tryrounded` | FALSE | the feasibility test of the rounded point (built from scratch, checked on all rows), before the anti-cycle flips |
+| `heuristics/feaspump/lpfix` | FALSE | the FGL completion on a separate clone LP: integers fixed to the rounded values, `c'x` minimised on the model's constraints, no cutoff row |
+| `heuristics/feaspump/restartonsol` | FALSE | the continuation after a solution (not upstream; the paper runs it on in every cell) |
+
+`minimal/build_min.py` regenerates `heur_feaspump_min.c` from the pristine file
+by unique textual anchors (same technique as the chain), and
+`minimal/REPORT_it.md` (Italian) records how the diff was built and verified:
+it compiles with 0 warnings in a separate worktree, and on four instances × two
+cells (bare pump; cutoff at λ = 0.5 with test and completion) it reproduces the
+pump's numbers of the campaign binary `scip_f5` exactly (primal bound, solutions
+found by the pump, diving-LP calls and iterations, `.sol` files byte for byte)
+when the two are run with the same loop limits. Two things are deliberately
+**not** in it: `stopafter` (a harness device: after the pump returns, the
+minimal binary lets SCIP finish the root node, so its total time and its global
+solution count differ from the campaign logs, the pump's own numbers do not),
+and the per-round diagnostics (the minimal binary is faster per round). The
+completion is independent of the test here (`lpfix` alone is a valid setting);
+in the campaign binary it was nested under `tryrounded`, and the paper never
+runs the combination `tryrounded = FALSE, lpfix = TRUE`.
