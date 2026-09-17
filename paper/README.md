@@ -63,8 +63,8 @@ MIPLIB 2017 instances with at least 80 % binary variables: 463 probed, **424
 analysed, 25,440 runs**, strata E1 = 176 and E2 = 248. The exclusions are
 declared, not silent — 37 instances whose first LP is not solved within the 600 s
 of the probe, 2 with an incomplete arm × seed grid because of a numerical error
-in SCIP — and `../campaign_scip/agg_fact.py` prints all 39 by name, for the
-supplementary material.
+in SCIP — and `../campaign_scip/agg_fact.py` prints all 39 by name; the manuscript
+refers to this package for the list and has no supplementary material.
 
 ## Files
 

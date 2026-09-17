@@ -165,7 +165,7 @@ restarts of the from-scratch FGL pump of Section 7. A constraint on cᵀx sweeps
 the objective range and is moved at every repeated rounding; nothing is random.
 The experiment was written as a full section, audited, and taken out because
 its only outcome is a loss without significance; the sentence and the numbers
-stay for the record, the full table is supplementary material.
+stay for the record, and the full table is in this package only.
 
 * **Code**: `fp_react.py` (imports `fp_target.py` and `fp.py` of this
   directory; md5 of the file that produced the results: `a28bf7a6…`). The arm
@@ -225,4 +225,4 @@ stay for the record, the full table is supplementary material.
 | `job26_react.sh`, `mk_react_list.py`, `inst_react.txt` | the runner, the list builder and the list of the sweep campaign |
 | `agg_react.py`, `mk_tab_react.py` | parsing and statistics of the sweep logs; the table and the macros |
 | `results/logs_r26_4949586.tgz` | **the raw logs of the sweep campaign**, job 4949586 |
-| `tab_react.tex`, `val_react.tex` | the generated table (supplementary material) and the macros of the conclusions' sentence |
+| `tab_react.tex`, `val_react.tex` | the generated table (in this package only, not in the manuscript) and the macros of the conclusions' sentence |
