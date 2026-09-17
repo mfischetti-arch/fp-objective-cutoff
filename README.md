@@ -149,11 +149,10 @@ here (given the cluster time), and all available from the author on request.
    small and **are** included: `campaign_gurobi/results/logs_r26_4949586.tgz`
    (272 files, 229 KB compressed).
 
-   **Proposal for the published version of the artefact:** attach the 436 MB
-   archive as a **GitHub release asset** (the 2 GB per-file limit is ample), or
-   deposit it on **Zenodo** together with a snapshot of this repository, which
-   also yields a DOI to cite in the paper. Neither has been done yet; the
-   decision is the author's.
+   **The archive is deposited on Zenodo**: `fpc_scip_out_sets_2026-09-03.tgz`,
+   <https://doi.org/10.5281/zenodo.22810848> (same size and md5 as above). The
+   snapshot of this repository at the tag `mpc-submission-1` is archived at
+   <https://doi.org/10.5281/zenodo.22810777>.
 
 4. **The exploratory campaigns that the paper does not report.** Jobs `job00`–
    `job22` (except the census grids of Section 2, `job03`, `job04`, `job20`,
