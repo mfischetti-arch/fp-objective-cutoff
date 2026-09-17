@@ -15,7 +15,8 @@ authors:
     affiliation: "Department of Information Engineering, University of Padova, Italy"
     email: matteo.fischetti@unipd.it
 license: MIT
-repository-code: "https://github.com/<user>/fp-objective-cutoff"
+repository-code: "https://github.com/mfischetti-arch/fp-objective-cutoff"
+version: "mpc-submission-1"
 keywords:
   - mixed-integer linear programming
   - feasibility pump
@@ -23,14 +24,13 @@ keywords:
   - objective cutoff
   - SCIP
   - MIPLIB 2017
-date-released: 2026-09-04
+date-released: 2026-09-17
 preferred-citation:
-  type: article
+  type: unpublished
   title: "Feasibility Pump with Objective Cutoff: A Computational Study"
   authors:
     - family-names: Fischetti
       given-names: Matteo
       affiliation: "Department of Information Engineering, University of Padova, Italy"
   year: 2026
-  journal: "Mathematical Programming Computation"
-  notes: "Submitted."
+  notes: "Manuscript, September 2026 (paper/manuscript.pdf in this package)."
